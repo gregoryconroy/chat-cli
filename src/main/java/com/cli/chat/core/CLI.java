@@ -3,7 +3,6 @@ package com.cli.chat.core;
 import com.cli.chat.handlers.CommandHandler;
 import com.cli.chat.handlers.StateHandler;
 import com.cli.chat.util.ConsolePrinter;
-import com.cli.chat.models.enums.Page;
 
 import java.util.Scanner;
 

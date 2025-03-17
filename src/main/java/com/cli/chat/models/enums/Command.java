@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public enum Command {
-    BACK("back", List.of(), "return to the previous page", "^back$"),
+    CHATS("chats", List.of(), "go to the chats page", "^chats$"),
     DELETE_CHAT("deletechat", List.of(), "delete the chat history between you and the specified user", "^deletechat$"),
     EXIT("exit", List.of(), "terminate the application", "^exit$"),
     HELP("help", List.of(), "show a list of available commands and their descriptions", "^help$"),

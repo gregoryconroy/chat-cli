@@ -46,13 +46,13 @@ public class CommandHandler {
         List<String> arguments = parsedCommand.arguments();
 
         switch (command) {
+            case CHATS -> StateHandler.showChats();
             case EXIT -> System.exit(0);
             case HELP -> StateHandler.showHelp();
             case LOGIN -> StateHandler.login();
             case LOGOUT -> StateHandler.logout();
             case TIPS -> StateHandler.setTips(arguments.getFirst());
             case OPEN_CHAT -> StateHandler.openConversation(arguments.getFirst());
-            case BACK -> StateHandler.prevPage();
             case USERS -> StateHandler.showUsers();
         }
     }

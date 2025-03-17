@@ -14,7 +14,6 @@ import java.util.Stack;
 public class StateHandler {
     private static Page currentPage;
     private static boolean showTips = false;
-    private final static Stack<Page> pageStack = new Stack<>();
 
     public static void init() {
         StateHandler.gotoPage(Page.LOGIN);
@@ -22,15 +21,11 @@ public class StateHandler {
 
     public static void gotoPage(Page page) {
         currentPage = page;
-        pageStack.push(currentPage);
         showPageInfo();
-
-        switch (currentPage) {
-            case Page.CHATS -> showChats();
-        }
     }
 
-    private static void showChats() {
+    public static void showChats() {
+        StateHandler.gotoPage(Page.CHATS);
         List<Chat> chats = ApiHandler.getChats();
         ConsolePrinter.printChats(chats);
     }
@@ -44,11 +39,6 @@ public class StateHandler {
         }
     }
 
-    public static void prevPage() {
-        pageStack.pop();
-        gotoPage(pageStack.pop());
-    }
-
     public static void setTips(String option) {
         if (option.equals("show")) {
             showTips = true;
@@ -59,13 +49,12 @@ public class StateHandler {
     }
 
     public static void login() {
-        gotoPage(Page.CHATS);
+        showChats();
     }
 
     public static void logout() {
         LoadingAnimation.startLoadingAnimation("Logging out");
         LoadingAnimation.stopLoadingAnimation();
-        pageStack.clear();
         gotoPage(Page.LOGIN);
     }
 
