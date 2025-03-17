@@ -1,5 +1,6 @@
 package com.cli.chat.util;
 
+import com.cli.chat.data.SessionInfo;
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.enums.Page;
 import com.cli.chat.models.records.Chat;
@@ -102,9 +103,15 @@ public class ConsolePrinter {
 
     public static void printConversation(List<Message> messages) {
         messages.forEach(message -> {
-            print(message.username(), BLUE, BOLD);
-            print(" ");
+            if (Objects.equals(message.username(), SessionInfo.getUsername())) {
+                print("You", CYAN, BOLD);
+            }
+            else {
+                print(message.username(), BLUE, BOLD);
+            }
+            println(" [" + message.time() + "]", YELLOW);
             println(message.message());
+            println("");
         });
     }
 

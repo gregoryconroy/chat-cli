@@ -1,5 +1,6 @@
 package com.cli.chat.handlers;
 
+import com.cli.chat.data.SessionInfo;
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.records.Chat;
 import com.cli.chat.models.records.Message;
@@ -9,7 +10,6 @@ import com.cli.chat.models.enums.Page;
 import com.cli.chat.util.LoadingAnimation;
 
 import java.util.List;
-import java.util.Stack;
 
 public class StateHandler {
     private static Page currentPage;
@@ -17,6 +17,7 @@ public class StateHandler {
 
     public static void init() {
         StateHandler.gotoPage(Page.LOGIN);
+        SessionInfo.setUsername("Liam");
     }
 
     public static void gotoPage(Page page) {
