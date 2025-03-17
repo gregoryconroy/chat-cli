@@ -62,6 +62,10 @@ public class StateHandler {
     public static void openConversation(String username) {
         gotoPage(Page.CONVERSATION);
 
+        ConsolePrinter.print("Conversation with: ");
+        ConsolePrinter.println(username, ConsolePrinter.BLUE, ConsolePrinter.BOLD);
+        ConsolePrinter.println("");
+
         List<Message> messages = ApiHandler.getMessages(username);
         ConsolePrinter.printConversation(messages);
     }
