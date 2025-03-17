@@ -117,9 +117,10 @@ public class ConsolePrinter {
         chats.forEach(chat -> {
             String colour = colourQueue.remove();
             print(chat.username(), colour, BOLD);
-            print(" [" + chat.time() + "] ", YELLOW);
+            println(" [" + chat.time() + "]", YELLOW);
             println(chat.message());
             colourQueue.add(colour);
+            println("");
         });
     }
 

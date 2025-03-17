@@ -1,4 +1,4 @@
-package com.cli.chat.core;
+package com.cli.chat.handlers;
 
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.util.ConsolePrinter;

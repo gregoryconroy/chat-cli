@@ -1,3 +1,3 @@
 package com.cli.chat.models.records;
 
-public record User(String username) {}
+public record User(String username, String useremail) {}
