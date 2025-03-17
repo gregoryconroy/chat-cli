@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class CLI {
     public static void start() {
         Scanner scanner = new Scanner(System.in);
-        StateHandler.gotoPage(Page.LOGIN);
+        StateHandler.init();
 
         while (true) {
             ConsolePrinter.print(">", ConsolePrinter.BLUE);
@@ -22,8 +22,5 @@ public class CLI {
                 ConsolePrinter.print("An error occurred: ", ConsolePrinter.RED);
             }
         }
-
     }
-
-
 }

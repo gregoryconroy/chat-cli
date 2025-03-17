@@ -143,7 +143,4 @@ public class ConsolePrinter {
             System.out.println("Error clearing console: " + e.getMessage());
         }
     }
-
-
-
 }

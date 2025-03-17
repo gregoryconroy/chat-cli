@@ -20,6 +20,27 @@ public class CommandHandler {
         );
     }
 
+    private static Optional<ParsedCommand> getParsedCommand(Command command, String input) {
+        Matcher matcher = command.getPattern().matcher(input);
+        return matcher.matches()
+                ? Optional.of(new ParsedCommand(command,
+                IntStream.rangeClosed(1, matcher.groupCount())
+                        .mapToObj(matcher::group)
+                        .map(String::trim)
+                        .collect(Collectors.toList()))
+        )
+                : Optional.empty();
+    }
+
+    private static Optional<ParsedCommand> parseCommand(String input) {
+        List<Command> availableCommands = StateHandler.getAvailableCommands();
+
+        return availableCommands.stream()
+                .filter(command -> command.getPattern().matcher(input).matches())
+                .findFirst()
+                .flatMap(command -> getParsedCommand(command, input));
+    }
+
     private static void executeCommand(ParsedCommand parsedCommand) {
         Command command = parsedCommand.command();
         List<String> arguments = parsedCommand.arguments();
@@ -43,26 +64,5 @@ public class CommandHandler {
         ConsolePrinter.print("help", ConsolePrinter.GREEN, ConsolePrinter.BOLD);
         ConsolePrinter.println(" for a list of available commands");
         ConsolePrinter.println("");
-    }
-
-    private static Optional<ParsedCommand> getParsedCommand(Command command, String input) {
-        Matcher matcher = command.getPattern().matcher(input);
-        return matcher.matches()
-                ? Optional.of(new ParsedCommand(command,
-                IntStream.rangeClosed(1, matcher.groupCount())
-                        .mapToObj(matcher::group)
-                        .map(String::trim)
-                        .collect(Collectors.toList()))
-        )
-                : Optional.empty();
-    }
-
-    private static Optional<ParsedCommand> parseCommand(String input) {
-        List<Command> availableCommands = StateHandler.getCurrentPage().getAvailableCommands();
-
-        return availableCommands.stream()
-                .filter(command -> command.getPattern().matcher(input).matches())
-                .findFirst()
-                .flatMap(command -> getParsedCommand(command, input));
     }
 }

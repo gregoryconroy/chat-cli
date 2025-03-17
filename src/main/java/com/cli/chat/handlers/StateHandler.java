@@ -1,5 +1,6 @@
 package com.cli.chat.handlers;
 
+import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.records.Chat;
 import com.cli.chat.models.records.Message;
 import com.cli.chat.models.records.User;
@@ -15,10 +16,23 @@ public class StateHandler {
     private static boolean showTips = false;
     private final static Stack<Page> pageStack = new Stack<>();
 
+    public static void init() {
+        StateHandler.gotoPage(Page.LOGIN);
+    }
+
     public static void gotoPage(Page page) {
         currentPage = page;
         pageStack.push(currentPage);
         showPageInfo();
+
+        switch (currentPage) {
+            case Page.CHATS -> showChats();
+        }
+    }
+
+    private static void showChats() {
+        List<Chat> chats = ApiHandler.getChats();
+        ConsolePrinter.printChats(chats);
     }
 
     private static void showPageInfo() {
@@ -32,8 +46,7 @@ public class StateHandler {
 
     public static void prevPage() {
         pageStack.pop();
-        currentPage = pageStack.peek();
-        showPageInfo();
+        gotoPage(pageStack.pop());
     }
 
     public static void setTips(String option) {
@@ -45,28 +58,8 @@ public class StateHandler {
         }
     }
 
-    public static void openConversation(String username) {
-        gotoPage(Page.CONVERSATION);
-
-        List<Message> messages = ApiHandler.getMessages(username);
-        ConsolePrinter.printConversation(messages);
-    }
-
-    public static Page getCurrentPage() {
-        return currentPage;
-    }
-
-    public static void showHelp() {
-        ConsolePrinter.println("");
-        ConsolePrinter.printPageHelp(currentPage);
-    }
-
     public static void login() {
-        LoadingAnimation.startLoadingAnimation("Logging in");
-        LoadingAnimation.stopLoadingAnimation();
         gotoPage(Page.CHATS);
-        List<Chat> chats = ApiHandler.getChats();
-        ConsolePrinter.printChats(chats);
     }
 
     public static void logout() {
@@ -76,8 +69,24 @@ public class StateHandler {
         gotoPage(Page.LOGIN);
     }
 
+    public static void openConversation(String username) {
+        gotoPage(Page.CONVERSATION);
+
+        List<Message> messages = ApiHandler.getMessages(username);
+        ConsolePrinter.printConversation(messages);
+    }
+
+    public static void showHelp() {
+        ConsolePrinter.println("");
+        ConsolePrinter.printPageHelp(currentPage);
+    }
+
     public static void showUsers() {
         List<User> users = ApiHandler.getUsers();
         ConsolePrinter.printUsers(users);
+    }
+
+    public static List<Command> getAvailableCommands() {
+        return currentPage.getAvailableCommands();
     }
 }

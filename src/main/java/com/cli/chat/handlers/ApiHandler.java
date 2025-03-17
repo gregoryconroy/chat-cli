@@ -21,8 +21,8 @@ public class ApiHandler {
 
     public static List<User> getUsers() {
         LoadingAnimation.startLoadingAnimation("Retrieving user list");
-        List<User> users = get("user/list", new TypeReference<>() {});
-//        List<User> users = getFile("src/main/java/com/cli/chat/data/users.json", new TypeReference<>() {});
+//        List<User> users = get("user/list", new TypeReference<>() {});
+        List<User> users = getFile("src/main/java/com/cli/chat/data/users.json", new TypeReference<>() {});
         LoadingAnimation.stopLoadingAnimation();
         return users;
     }
@@ -41,7 +41,6 @@ public class ApiHandler {
         List<Chat> chats = getFile("src/main/java/com/cli/chat/data/chats.json", new TypeReference<>() {});
         LoadingAnimation.stopLoadingAnimation();
         return chats;
-
     }
 
     private static <T> T get(String endpoint, TypeReference<T> responseType) {

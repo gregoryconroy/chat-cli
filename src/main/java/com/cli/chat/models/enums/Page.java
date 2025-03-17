@@ -20,7 +20,7 @@ public enum Page {
         return this.displayName;
     }
 
-    public static List<Command> getCommonCommands() {
+    public static List<Command> getGlobalCommands() {
         return List.of(Command.EXIT, Command.HELP, Command.TIPS);
     }
 
@@ -35,7 +35,7 @@ public enum Page {
     }
 
     public List<Command> getAvailableCommands() {
-        List<Command> common = getCommonCommands();
+        List<Command> common = getGlobalCommands();
         List<Command> specific = getCurrentCommands();
 
         List<Command> combined = new ArrayList<>(specific);

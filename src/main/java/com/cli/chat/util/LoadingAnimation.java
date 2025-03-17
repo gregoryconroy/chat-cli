@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 public class LoadingAnimation {
     private static volatile boolean running = false;
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private static final String LOAD_COLOUR = ConsolePrinter.CYAN;
 
     public static void startLoadingAnimation(String info) {
         if (running) return; // Prevent multiple animations
@@ -67,7 +68,4 @@ public class LoadingAnimation {
         // Move to the beginning of the line, clear it, and reset cursor
         System.out.print("\r\033[K");
     }
-
-    // Example ANSI color
-    private static final String LOAD_COLOUR = ConsolePrinter.CYAN;
 }
