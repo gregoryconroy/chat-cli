@@ -29,9 +29,10 @@ public class CommandHandler {
             case HELP -> StateHandler.showHelp();
             case LOGIN -> StateHandler.login();
             case LOGOUT -> StateHandler.logout();
-            case TIPS -> StateHandler.setTips(arguments.get(0));
-            case OPEN_CHAT -> StateHandler.openConversation(arguments.get(0));
+            case TIPS -> StateHandler.setTips(arguments.getFirst());
+            case OPEN_CHAT -> StateHandler.openConversation(arguments.getFirst());
             case BACK -> StateHandler.prevPage();
+            case USERS -> StateHandler.showUsers();
         }
     }
 

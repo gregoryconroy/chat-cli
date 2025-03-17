@@ -2,10 +2,11 @@ package com.cli.chat.util;
 
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.enums.Page;
+import com.cli.chat.models.records.Chat;
 import com.cli.chat.models.records.Message;
+import com.cli.chat.models.records.User;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class ConsolePrinter {
 
@@ -101,9 +102,30 @@ public class ConsolePrinter {
 
     public static void printConversation(List<Message> messages) {
         messages.forEach(message -> {
-            print(message.sender(), BLUE, BOLD);
+            print(message.username(), BLUE, BOLD);
             print(" ");
             println(message.message());
+        });
+    }
+
+    public static void printChats(List<Chat> chats) {
+        Queue<String> colourQueue = new LinkedList<>();
+        colourQueue.add(BLUE);
+        colourQueue.add(MAGENTA);
+        colourQueue.add(CYAN);
+
+        chats.forEach(chat -> {
+            String colour = colourQueue.remove();
+            print(chat.username(), colour, BOLD);
+            print(" [" + chat.time() + "] ", YELLOW);
+            println(chat.message());
+            colourQueue.add(colour);
+        });
+    }
+
+    public static void printUsers(List<User> users) {
+        users.forEach(user -> {
+            ConsolePrinter.println(user.username(), BLUE, BOLD);
         });
     }
 
@@ -121,51 +143,6 @@ public class ConsolePrinter {
         }
     }
 
-    public static void showLoading(String info, int millis) {
-        int underlineLength = 3; // Length of the underline
-        long endTime = System.currentTimeMillis() + millis;
 
-        int underlineStartIndex = 0;
-        int underlineEndIndex = 0;
-
-        System.out.print("\033[?25l"); // hide cursor
-
-        // Loop to animate the underlining
-        while (System.currentTimeMillis() < endTime) {
-            System.out.print("\r");
-
-            for (int i = 0; i < info.length(); i++) {
-                if (i >= underlineStartIndex && i < underlineEndIndex) {
-                    print(info.substring(i, i + 1), CYAN);
-                }
-                else {
-                    print(info.substring(i, i + 1));
-                }
-            }
-
-            underlineEndIndex++;
-            if (underlineEndIndex - underlineStartIndex > underlineLength) {
-                underlineStartIndex++;
-            }
-
-            if (underlineStartIndex > info.length()) {
-                underlineStartIndex = 0;
-                underlineEndIndex = 0;
-            }
-
-            try {
-                Thread.sleep(50); // Adjust the speed of the animation here
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        System.out.print("\033[?25h"); // show cursor
-
-        print("\r");
-        for (int i = 0; i < info.length(); i++) {
-            print(" ");
-        }
-    }
 
 }

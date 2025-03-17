@@ -1,16 +1,18 @@
 package com.cli.chat.core;
 
+import com.cli.chat.models.records.Chat;
 import com.cli.chat.models.records.Message;
+import com.cli.chat.models.records.User;
 import com.cli.chat.util.ConsolePrinter;
 import com.cli.chat.models.enums.Page;
-import com.cli.chat.util.JsonConverter;
+import com.cli.chat.util.LoadingAnimation;
 
 import java.util.List;
 import java.util.Stack;
 
 public class StateHandler {
     private static Page currentPage;
-    private static boolean showTips = true;
+    private static boolean showTips = false;
     private final static Stack<Page> pageStack = new Stack<>();
 
     public static void gotoPage(Page page) {
@@ -46,8 +48,7 @@ public class StateHandler {
     public static void openConversation(String username) {
         gotoPage(Page.CONVERSATION);
 
-        List<Message> messages = JsonConverter.extractMessages("src/main/java/com/cli/chat/data/messages.json");
-
+        List<Message> messages = ApiHandler.getMessages(username);
         ConsolePrinter.printConversation(messages);
     }
 
@@ -61,13 +62,22 @@ public class StateHandler {
     }
 
     public static void login() {
-        ConsolePrinter.showLoading("Logging in", 100);
+        LoadingAnimation.startLoadingAnimation("Logging in");
+        LoadingAnimation.stopLoadingAnimation();
         gotoPage(Page.CHATS);
+        List<Chat> chats = ApiHandler.getChats();
+        ConsolePrinter.printChats(chats);
     }
 
     public static void logout() {
-        ConsolePrinter.showLoading("Logging out", 100);
+        LoadingAnimation.startLoadingAnimation("Logging out");
+        LoadingAnimation.stopLoadingAnimation();
         pageStack.clear();
         gotoPage(Page.LOGIN);
+    }
+
+    public static void showUsers() {
+        List<User> users = ApiHandler.getUsers();
+        ConsolePrinter.printUsers(users);
     }
 }
