@@ -104,7 +104,6 @@ public class StateHandler {
 
         List<Message> messages = ApiHandler.getMessages(username);
         ConsolePrinter.printConversation(messages);
-
     }
 
     public static void showHelp() {
