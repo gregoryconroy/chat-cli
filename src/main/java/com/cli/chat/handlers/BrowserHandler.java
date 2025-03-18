@@ -38,7 +38,7 @@ public class BrowserHandler {
     }
 
     private static void openBrowser() {
-        String authUrl = "http://ec2-13-246-228-91.af-south-1.compute.amazonaws.com:8080/token";
+        String authUrl = "http://ec2-13-246-228-91.af-south-1.compute.amazonaws.com:8080/oauth2/authorization/google";
 
         try {
             if (Desktop.isDesktopSupported()) {
