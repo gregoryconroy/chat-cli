@@ -97,7 +97,7 @@ public class StateHandler {
         gotoPage(Page.CONVERSATION);
 
         SessionInfo.setCurrentChat(username);
-
+        
         ConsolePrinter.print("Conversation with: ");
         ConsolePrinter.println(username, ConsolePrinter.BLUE, ConsolePrinter.BOLD);
         ConsolePrinter.println("");
@@ -105,6 +105,10 @@ public class StateHandler {
         List<Message> messages = ApiHandler.getMessages(username);
         ConsolePrinter.printConversation(messages);
 
+    }
+
+    public static void sendMessage(String message) {
+        ApiHandler.sendMessage(SessionInfo.getUsername(), SessionInfo.getCurrentChat(), message);
     }
 
     public static void showHelp() {

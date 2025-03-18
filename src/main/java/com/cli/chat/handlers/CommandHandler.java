@@ -53,6 +53,7 @@ public class CommandHandler {
             case LOGOUT -> StateHandler.logout();
             case TIPS -> StateHandler.setTips(arguments.getFirst());
             case OPEN_CHAT -> StateHandler.openConversation(arguments.getFirst());
+            case SEND -> StateHandler.sendMessage(arguments.getFirst());
             case USERS -> StateHandler.showUsers();
         }
     }

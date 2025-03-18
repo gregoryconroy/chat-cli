@@ -7,8 +7,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+import com.cli.chat.dto.DirectMessageDTO;
 import com.cli.chat.models.records.Chat;
 import com.cli.chat.models.records.Message;
+import com.cli.chat.util.ConsolePrinter;
 import com.cli.chat.util.Delay;
 import com.cli.chat.util.LoadingAnimation;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,16 +56,25 @@ public class ApiHandler {
 
     public static void createAccount(String username, String token) {
         LoadingAnimation.startLoadingAnimation("Creating account");
-        try {
-            User newUser = new User(username, token);
-
-            User createdUser = post("user/create", newUser, new TypeReference<User>() {});
-
-            System.out.println("Account created successfully: " + createdUser.username());
-        } catch (Exception e) {
-            System.out.println("Error creating account: " + e.getMessage());
-        }
+        new Delay(200);
+        // try {
+        //     User newUser = new User(username, token);
+            
+        //     User createdUser = post("user/create", newUser, new TypeReference<User>() {});
+            
+        //     System.out.println("Account created successfully: " + createdUser.username());
+        // } catch (Exception e) {
+        //     System.out.println("Error creating account: " + e.getMessage());
+        // }
         LoadingAnimation.stopLoadingAnimation();
+    }
+
+    public static void sendMessage(String sender, String recipientUsername, String message) {
+
+        DirectMessageDTO newMessage = new DirectMessageDTO(sender, recipientUsername, message);
+
+        post("conversation/send", newMessage, new TypeReference<Message>() {});
+        ConsolePrinter.println("Message sent to: " + recipientUsername);
     }
 
     private static <T> T get(String endpoint, TypeReference<T> responseType) {
