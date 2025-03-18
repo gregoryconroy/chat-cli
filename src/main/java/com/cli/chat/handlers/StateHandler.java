@@ -18,6 +18,8 @@ public class StateHandler {
     public static void init() {
         StateHandler.gotoPage(Page.LOGIN);
         SessionInfo.setUsername("Liam");
+        BrowserHandler.openLoginPage();
+
     }
 
     public static void gotoPage(Page page) {
