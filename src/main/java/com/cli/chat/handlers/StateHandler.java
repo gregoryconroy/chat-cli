@@ -40,9 +40,14 @@ public class StateHandler {
     }
 
     public static void createAccount(String username) {
-        ApiHandler.createAccount(username);
-        SessionInfo.setUsername(username);
-        showWelcome();
+        try {
+            String token = SessionInfo.getJWT();
+            ApiHandler.createAccount(username, token);
+            SessionInfo.setUsername(username);
+            showWelcome();
+        } catch (Exception e) {
+            ConsolePrinter.println("Account creation failed: " + e.getMessage());
+        }
     }
 
     public static void showWelcome() {

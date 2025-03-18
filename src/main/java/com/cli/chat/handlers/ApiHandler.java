@@ -12,6 +12,7 @@ import com.cli.chat.models.records.Message;
 import com.cli.chat.util.Delay;
 import com.cli.chat.util.LoadingAnimation;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.cli.chat.models.records.User;
 
@@ -51,9 +52,17 @@ public class ApiHandler {
         return username;
     }
 
-    public static void createAccount(String username) {
+    public static void createAccount(String username, String token) {
         LoadingAnimation.startLoadingAnimation("Creating account");
-        new Delay(2000);
+        try {
+            User newUser = new User(username, token);
+            
+            User createdUser = post("user/create", newUser, new TypeReference<User>() {});
+            
+            System.out.println("Account created successfully: " + createdUser.username());
+        } catch (Exception e) {
+            System.out.println("Error creating account: " + e.getMessage());
+        }
         LoadingAnimation.stopLoadingAnimation();
     }
 
@@ -74,6 +83,34 @@ public class ApiHandler {
             return objectMapper.readValue(response.body(), responseType);
         } catch (IOException | InterruptedException e) {
             Thread.currentThread().interrupt(); // Restore interrupt status if interrupted
+            throw new RuntimeException("Request failed: " + e.getMessage(), e);
+        }
+    }
+
+    private static <T, R> R post(String endpoint, T requestBody, TypeReference<R> responseType) {
+        HttpRequest request;
+        try {
+            String requestBodyJson = objectMapper.writeValueAsString(requestBody);
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(API_URL + endpoint))
+                    .header("Accept", "application/json")
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBodyJson))
+                    .build();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize request body", e);
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200 && response.statusCode() != 201) {
+                throw new IOException("HTTP Error: " + response.statusCode() + " - " + response.body());
+            }
+
+            return objectMapper.readValue(response.body(), responseType);
+        } catch (IOException | InterruptedException e) {
+            Thread.currentThread().interrupt(); 
             throw new RuntimeException("Request failed: " + e.getMessage(), e);
         }
     }
