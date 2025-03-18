@@ -69,12 +69,12 @@ public class ApiHandler {
         LoadingAnimation.stopLoadingAnimation();
     }
 
-    public static void sendMessage(String sender, String recipientUsername, String message) {
+    public static void sendMessage(String sender, String recipient, String message) {
 
-        DirectMessageDTO newMessage = new DirectMessageDTO(sender, recipientUsername, message);
+        DirectMessageDTO newMessage = new DirectMessageDTO(sender, recipient, message);
 
         post("conversation/send", newMessage, new TypeReference<Message>() {});
-        ConsolePrinter.println("Message sent to: " + recipientUsername);
+        ConsolePrinter.println("Message sent to: " + recipient);
     }
 
     private static <T> T get(String endpoint, TypeReference<T> responseType) {
