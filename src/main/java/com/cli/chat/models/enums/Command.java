@@ -9,7 +9,7 @@ public enum Command {
     DELETE_CHAT("deletechat", List.of(), "delete the chat history between you and the specified user", "^deletechat$"),
     EXIT("exit", List.of(), "terminate the application", "^exit$"),
     HELP("help", List.of(), "show a list of available commands and their descriptions", "^help$"),
-    LOGIN("login", List.of(), "request external login authorisation", "^login$"),
+    SET_USERNAME("setusername", List.of("<username>"), "set username for your account", "^setusername\\s+(\\S+)$"),
     LOGOUT("logout", List.of(), "log out of application", "^logout"),
     OPEN_CHAT("openchat", List.of("<username>"), "open the conversation between you and the specified user", "^openchat\\s+([\\w-]+)$"),
     PAGE_DOWN("pagedown", List.of(), "go down a page", "^pageup$"),

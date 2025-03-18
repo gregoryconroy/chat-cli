@@ -7,8 +7,10 @@ import com.cli.chat.models.records.Message;
 import com.cli.chat.models.records.User;
 import com.cli.chat.util.ConsolePrinter;
 import com.cli.chat.models.enums.Page;
+import com.cli.chat.util.Delay;
 import com.cli.chat.util.LoadingAnimation;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.List;
 
 public class StateHandler {
@@ -17,14 +19,40 @@ public class StateHandler {
 
     public static void init() {
         StateHandler.gotoPage(Page.LOGIN);
-        SessionInfo.setUsername("Liam");
-        BrowserHandler.openLoginPage();
+        String token = BrowserHandler.getToken();
+        SessionInfo.setJWT(token);
+        String username = ApiHandler.getUsername("gergalina");
 
+        if (username != null) {
+            SessionInfo.setUsername(username);
+            showWelcome();
+        } else {
+            StateHandler.showSignUp();
+        }
     }
 
     public static void gotoPage(Page page) {
         currentPage = page;
         showPageInfo();
+    }
+
+    public static void showSignUp() {
+        gotoPage(Page.SIGN_UP);
+    }
+
+    public static void createAccount(String username) {
+        ApiHandler.createAccount(username);
+        SessionInfo.setUsername(username);
+        showWelcome();
+    }
+
+    public static void showWelcome() {
+        ConsolePrinter.clearConsole();
+        ConsolePrinter.print("Welcome ");
+        ConsolePrinter.print(SessionInfo.getUsername(), ConsolePrinter.BLUE, ConsolePrinter.BOLD);
+        ConsolePrinter.println("!");
+        new Delay(5000);
+        gotoPage(Page.CHATS);
     }
 
     public static void showChats() {

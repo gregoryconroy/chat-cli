@@ -49,7 +49,7 @@ public class CommandHandler {
             case CHATS -> StateHandler.showChats();
             case EXIT -> System.exit(0);
             case HELP -> StateHandler.showHelp();
-            case LOGIN -> StateHandler.login();
+            case SET_USERNAME -> StateHandler.createAccount(arguments.getFirst());
             case LOGOUT -> StateHandler.logout();
             case TIPS -> StateHandler.setTips(arguments.getFirst());
             case OPEN_CHAT -> StateHandler.openConversation(arguments.getFirst());

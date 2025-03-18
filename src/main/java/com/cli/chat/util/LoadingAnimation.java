@@ -40,11 +40,7 @@ public class LoadingAnimation {
                     underlineEndIndex = 0;
                 }
 
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                new Delay(50);
             }
 
             System.out.print("\033[?25h"); // Show cursor
@@ -53,14 +49,7 @@ public class LoadingAnimation {
 
     public static void stopLoadingAnimation() {
         running = false;
-
-        // Small delay to ensure the last frame is rendered before clearing
-        try {
-            Thread.sleep(60);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
+        new Delay(60);
         clearText();
     }
 

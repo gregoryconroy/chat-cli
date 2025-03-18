@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.cli.chat.models.records.Chat;
 import com.cli.chat.models.records.Message;
+import com.cli.chat.util.Delay;
 import com.cli.chat.util.LoadingAnimation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -43,6 +44,19 @@ public class ApiHandler {
         return chats;
     }
 
+    public static String getUsername(String username) {
+        LoadingAnimation.startLoadingAnimation("Checking if account exists");
+        new Delay(2000);
+        LoadingAnimation.stopLoadingAnimation();
+        return username;
+    }
+
+    public static void createAccount(String username) {
+        LoadingAnimation.startLoadingAnimation("Creating account");
+        new Delay(2000);
+        LoadingAnimation.stopLoadingAnimation();
+    }
+
     private static <T> T get(String endpoint, TypeReference<T> responseType) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL + endpoint))
@@ -65,11 +79,7 @@ public class ApiHandler {
     }
 
     private static <T> T getFile(String filename, TypeReference<T> responseType) {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        new Delay(2000);
         try {
             return objectMapper.readValue(new java.io.File(filename), responseType);
         } catch (IOException e) {
