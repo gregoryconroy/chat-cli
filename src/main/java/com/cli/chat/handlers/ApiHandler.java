@@ -56,9 +56,9 @@ public class ApiHandler {
         LoadingAnimation.startLoadingAnimation("Creating account");
         try {
             User newUser = new User(username, token);
-            
+
             User createdUser = post("user/create", newUser, new TypeReference<User>() {});
-            
+
             System.out.println("Account created successfully: " + createdUser.username());
         } catch (Exception e) {
             System.out.println("Error creating account: " + e.getMessage());

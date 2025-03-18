@@ -63,8 +63,6 @@ public class StateHandler {
         StateHandler.gotoPage(Page.CHATS);
         List<Chat> chats = ApiHandler.getChats();
         ConsolePrinter.printChats(chats);
-        System.out.println(SessionInfo.getJWT());
-
     }
 
     private static void showPageInfo() {
