@@ -96,12 +96,15 @@ public class StateHandler {
     public static void openConversation(String username) {
         gotoPage(Page.CONVERSATION);
 
+        SessionInfo.setCurrentChat(username);
+
         ConsolePrinter.print("Conversation with: ");
         ConsolePrinter.println(username, ConsolePrinter.BLUE, ConsolePrinter.BOLD);
         ConsolePrinter.println("");
 
         List<Message> messages = ApiHandler.getMessages(username);
         ConsolePrinter.printConversation(messages);
+
     }
 
     public static void showHelp() {
