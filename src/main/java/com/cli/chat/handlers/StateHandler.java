@@ -10,7 +10,6 @@ import com.cli.chat.models.enums.Page;
 import com.cli.chat.util.Delay;
 import com.cli.chat.util.LoadingAnimation;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.List;
 
 public class StateHandler {
@@ -21,7 +20,7 @@ public class StateHandler {
         StateHandler.gotoPage(Page.LOGIN);
         String token = BrowserHandler.getToken();
         SessionInfo.setJWT(token);
-        String username = ApiHandler.getUsername("gergalina");
+        String username = ApiHandler.getUsername(null);
 
         if (username != null) {
             SessionInfo.setUsername(username);
@@ -52,13 +51,15 @@ public class StateHandler {
         ConsolePrinter.print(SessionInfo.getUsername(), ConsolePrinter.BLUE, ConsolePrinter.BOLD);
         ConsolePrinter.println("!");
         new Delay(5000);
-        gotoPage(Page.CHATS);
+        showChats();
     }
 
     public static void showChats() {
         StateHandler.gotoPage(Page.CHATS);
         List<Chat> chats = ApiHandler.getChats();
         ConsolePrinter.printChats(chats);
+        System.out.println(SessionInfo.getJWT());
+
     }
 
     private static void showPageInfo() {
