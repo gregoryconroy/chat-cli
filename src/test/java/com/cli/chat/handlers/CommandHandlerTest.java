@@ -10,7 +10,6 @@ class CommandHandlerTest {
     void handleCommand_ShouldExecuteChatsCommand() {
         // Simulate the input for the "chats" command
         CommandHandler.handleCommand("chats");
-
         // Add an assertion here depending on how `StateHandler.showChats()` should be validated
         // Since we can't mock it with Mockito, the test will pass if there are no errors
     }
