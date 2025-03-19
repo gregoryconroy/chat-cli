@@ -43,7 +43,7 @@ public class ApiHandler {
         return messages;
     }
 
-    public static List<Chat> getChats() {c
+    public static List<Chat> getChats() {
         LoadingAnimation.startLoadingAnimation("Retrieving conversation list");
 //        List<Chat> chats = get("chats", new TypeReference<>() {});
         List<Chat> chats = getFile("src/main/java/com/cli/chat/data/chats.json", new TypeReference<>() {});
