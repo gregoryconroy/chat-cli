@@ -1,16 +1,18 @@
 package com.cli.chat.handlers;
 
 import com.cli.chat.models.enums.Command;
-import com.cli.chat.util.ConsolePrinter;
 import com.cli.chat.models.records.ParsedCommand;
+import com.cli.chat.util.ConsolePrinter;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.*;
 
 public class CommandHandler {
+
+    private CommandHandler() {}
+
     public static void handleCommand(String input) {
         Optional<ParsedCommand> optionalParsedCommand = parseCommand(input);
 

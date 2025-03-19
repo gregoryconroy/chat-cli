@@ -3,18 +3,18 @@ package com.cli.chat.handlers;
 import com.cli.chat.util.LoadingAnimation;
 import com.sun.net.httpserver.HttpServer;
 import java.awt.Desktop;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.*;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.*;
 
 public class BrowserHandler {
     private static final int PORT = 6969;
     private static String authCode = null;
     private static final CountDownLatch latch = new CountDownLatch(1);
+
+    private BrowserHandler() {}
 
     public static String getToken() {
         LoadingAnimation.startLoadingAnimation("Awaiting login");

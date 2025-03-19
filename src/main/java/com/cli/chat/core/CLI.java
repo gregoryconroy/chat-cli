@@ -1,12 +1,12 @@
 package com.cli.chat.core;
-
-import com.cli.chat.handlers.CommandHandler;
-import com.cli.chat.handlers.StateHandler;
+import com.cli.chat.handlers.*;
 import com.cli.chat.util.ConsolePrinter;
-
 import java.util.Scanner;
 
 public class CLI {
+
+    private CLI() {}
+
     public static void start() {
         Scanner scanner = new Scanner(System.in);
         StateHandler.init();

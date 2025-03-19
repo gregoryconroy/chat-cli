@@ -2,20 +2,17 @@ package com.cli.chat.handlers;
 
 import com.cli.chat.data.SessionInfo;
 import com.cli.chat.exception.UserNotFoundException;
-import com.cli.chat.models.enums.Command;
-import com.cli.chat.models.records.Conversation;
-import com.cli.chat.models.records.Message;
-import com.cli.chat.models.records.User;
-import com.cli.chat.util.ConsolePrinter;
-import com.cli.chat.models.enums.Page;
-import com.cli.chat.util.Delay;
-import com.cli.chat.util.LoadingAnimation;
+import com.cli.chat.models.enums.*;
+import com.cli.chat.models.records.*;
+import com.cli.chat.util.*;
 
 import java.util.List;
 
 public class StateHandler {
     private static Page currentPage;
     private static boolean showTips = true;
+
+    private StateHandler() {}
 
     public static void init() {
         StateHandler.gotoPage(Page.LOGIN);

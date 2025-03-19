@@ -2,32 +2,23 @@ package com.cli.chat.handlers;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
+import java.net.http.*;
+import java.util.*;
 import com.cli.chat.data.SessionInfo;
-import com.cli.chat.exception.ApiResponseParsingException;
-import com.cli.chat.exception.UserNotFoundException;
-import com.cli.chat.models.records.Conversation;
-import com.cli.chat.models.records.Message;
-import com.cli.chat.util.ConsolePrinter;
-import com.cli.chat.util.Delay;
-import com.cli.chat.util.LoadingAnimation;
+import com.cli.chat.exception.*;
+import com.cli.chat.models.records.*;
+import com.cli.chat.util.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.cli.chat.models.records.User;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class ApiHandler {
     private static final HttpClient client = HttpClient.newHttpClient();
     private static final String API_URL = "http://ec2-13-246-228-91.af-south-1.compute.amazonaws.com:8080/";
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private ApiHandler() {}
 
     public static void init() {
         objectMapper.registerModule(new JavaTimeModule());

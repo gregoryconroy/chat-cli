@@ -2,8 +2,10 @@ package com.cli.chat.data;
 
 public class SessionInfo {
     private static String username;
-    private static String JWT;
+    private static String jwt;
     private static String activeConversation;
+
+    private SessionInfo() {}
 
     public static String getUsername() {
         return username;
@@ -14,11 +16,11 @@ public class SessionInfo {
     }
 
     public static String getJWT() {
-        return JWT;
+        return jwt;
     }
 
-    public static void setJWT(String JWT) {
-        SessionInfo.JWT = JWT;
+    public static void setJWT(String jwt) {
+        SessionInfo.jwt = jwt;
     }
 
     public static String getActiveConversation() {

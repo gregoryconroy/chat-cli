@@ -1,7 +1,6 @@
 package com.cli.chat.models.enums;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public enum Page {
     LOGIN("Login"),
@@ -9,7 +8,6 @@ public enum Page {
     CONVERSATION_LIST("Conversation List"),
     CONVERSATION("Conversation"),
     USER_LIST("User List");
-
 
     private final String displayName;
 

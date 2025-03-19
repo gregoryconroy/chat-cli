@@ -1,14 +1,9 @@
 package com.cli.chat.util;
 
 import com.cli.chat.data.SessionInfo;
-import com.cli.chat.models.enums.Command;
-import com.cli.chat.models.enums.Page;
-import com.cli.chat.models.records.Conversation;
-import com.cli.chat.models.records.Message;
-import com.cli.chat.models.records.User;
-
+import com.cli.chat.models.enums.*;
+import com.cli.chat.models.records.*;
 import java.util.*;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class ConsolePrinter {

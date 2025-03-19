@@ -1,7 +1,6 @@
 package com.cli.chat.util;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class LoadingAnimation {
     private static volatile boolean running = false;
