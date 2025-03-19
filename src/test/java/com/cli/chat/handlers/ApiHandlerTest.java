@@ -52,6 +52,6 @@ class ApiHandlerTest {
 
     @Test
     void sendMessage_ShouldNotThrowExceptions() {
-        assertDoesNotThrow(() -> ApiHandler.sendMessage("Alice", "Bob"));
+        assertDoesNotThrow(() -> ApiHandler.sendMessage("Alice", "Bob", "Hello, Bob!", "sometoken"));
     }
 }

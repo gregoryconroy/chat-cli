@@ -61,6 +61,11 @@ class StateHandlerTest {
     }
 
     @Test
+    void deleteChats_ShouldNotThrowExceptions() {
+        assertDoesNotThrow(StateHandler::deleteChats);
+    }
+
+    @Test
     void sendMessage_ShouldNotThrowExceptions() {
         assertDoesNotThrow(() -> StateHandler.sendMessage("Hello!"));
     }
