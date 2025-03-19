@@ -34,12 +34,17 @@ class ApiHandlerTest {
     }
 
     @Test
-    void getUsername_ShouldReturnSameUsername() {
-        String inputUsername = "testUser";
-        String result = ApiHandler.getUsername(inputUsername);
+    void getUsername_ShouldReturnSameUsername() throws Exception {
+        // Given that the API returns a user with a valid username,
+        // you can assume that the method should return this username.
 
-        assertEquals(inputUsername, result, "getUsername should return the same input username");
+        // Example to check if the returned username is not null
+        String result = ApiHandler.getUsername();  // No arguments passed now.
+
+        assertNotNull(result, "Username should not be null");
+        // Optionally add more assertions based on the actual logic, like checking the specific username
     }
+
     @Test
     void createAccount_ShouldNotThrowExceptions() {
         assertDoesNotThrow(() -> ApiHandler.createAccount("testUser", "testToken"));
@@ -47,6 +52,6 @@ class ApiHandlerTest {
 
     @Test
     void sendMessage_ShouldNotThrowExceptions() {
-        assertDoesNotThrow(() -> ApiHandler.sendMessage("Alice", "Bob", "Hello, Bob!"));
+        assertDoesNotThrow(() -> ApiHandler.sendMessage("Alice", "Bob", "Hello, Bob!", "sometoken"));
     }
 }
