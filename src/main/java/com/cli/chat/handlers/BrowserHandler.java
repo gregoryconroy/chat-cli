@@ -50,7 +50,7 @@ public class BrowserHandler {
         }
     }
 
-    private static void startServer() throws IOException {
+     static void startServer() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
         server.createContext("/callback", exchange -> {
             URI requestURI = exchange.getRequestURI();
@@ -71,7 +71,7 @@ public class BrowserHandler {
         new Thread(server::start).start();
     }
 
-    private static Map<String, String> parseQuery(String query) {
+     static Map<String, String> parseQuery(String query) {
         return query == null ? Map.of() :
                 Stream.of(query.split("&"))
                         .map(param -> param.split("="))
