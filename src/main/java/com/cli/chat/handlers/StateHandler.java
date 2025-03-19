@@ -114,7 +114,7 @@ public class StateHandler {
     }
 
     public static void sendMessage(String message) {
-        ApiHandler.sendMessage(SessionInfo.getUsername(), SessionInfo.getCurrentChat(), message, SessionInfo.getJWT());
+        ApiHandler.sendMessage(SessionInfo.getUsername(), SessionInfo.getActiveConversation(), message, SessionInfo.getJWT());
     }
 
     public static void showHelp() {

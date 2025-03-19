@@ -3,7 +3,7 @@ package com.cli.chat.data;
 public class SessionInfo {
     private static String username;
     private static String JWT;
-    private static String currentChat;
+    private static String activeConversation;
 
     public static String getUsername() {
         return username;
@@ -21,11 +21,11 @@ public class SessionInfo {
         SessionInfo.JWT = JWT;
     }
 
-    public static String getCurrentChat() {
-        return currentChat;
+    public static String getActiveConversation() {
+        return activeConversation;
     }
 
     public static void setActiveConversation(String currentChat) {
-        SessionInfo.currentChat = currentChat;
+        SessionInfo.activeConversation = currentChat;
     }
 }
