@@ -84,7 +84,7 @@ public class ApiHandler {
 
         try {
             Conversation newConversation = new Conversation(0, conversationName);
-            post("conversations?username=", newConversation, SessionInfo.getJWT());
+            post("conversations", newConversation, SessionInfo.getJWT());
         } catch (Exception e) {
             throw new Exception("Could not create conversation" + e.getMessage());
         } finally {
