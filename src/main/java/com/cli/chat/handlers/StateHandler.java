@@ -1,7 +1,6 @@
 package com.cli.chat.handlers;
 
 import com.cli.chat.data.SessionInfo;
-import com.cli.chat.exception.ApiResponseParsingException;
 import com.cli.chat.exception.UserNotFoundException;
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.records.Chat;
@@ -69,12 +68,6 @@ public class StateHandler {
         showChats();
     }
 
-    public static void showChats() {
-        StateHandler.gotoPage(Page.CHATS);
-        List<Chat> chats = ApiHandler.getChats();
-        ConsolePrinter.printChats(chats);
-    }
-
     private static void showPageInfo() {
         ConsolePrinter.clearConsole();
         ConsolePrinter.printPage(currentPage.getDisplayName());
@@ -93,22 +86,31 @@ public class StateHandler {
         }
     }
 
-    public static void logout() {
-        LoadingAnimation.startLoadingAnimation("Logging out");
-        LoadingAnimation.stopLoadingAnimation();
-        gotoPage(Page.LOGIN);
+    public static void createConversation(String conversationName) {
+        try {
+           ApiHandler.createConversation(conversationName);
+           showConversation(conversationName);
+        } catch (Exception e) {
+            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+        }
     }
 
-    public static void openConversation(String username) {
+    public static void showChats() {
+        StateHandler.gotoPage(Page.CHATS);
+        List<Chat> chats = ApiHandler.getChats();
+        ConsolePrinter.printChats(chats);
+    }
+
+    public static void showConversation(String conversationName) {
         gotoPage(Page.CONVERSATION);
 
-        SessionInfo.setCurrentChat(username);
+        SessionInfo.setCurrentChat(conversationName);
         
         ConsolePrinter.print("Conversation with: ");
-        ConsolePrinter.println(username, ConsolePrinter.BLUE, ConsolePrinter.BOLD);
+        ConsolePrinter.println(conversationName, ConsolePrinter.BLUE, ConsolePrinter.BOLD);
         ConsolePrinter.blankln();
 
-        List<Message> messages = ApiHandler.getMessages(username);
+        List<Message> messages = ApiHandler.getMessages(conversationName);
         ConsolePrinter.printConversation(messages);
     }
 
@@ -128,6 +130,12 @@ public class StateHandler {
     public static void showUsers() {
         List<User> users = ApiHandler.getUsers();
         ConsolePrinter.printUsers(users);
+    }
+
+    public static void logout() {
+        LoadingAnimation.startLoadingAnimation("Logging out");
+        LoadingAnimation.stopLoadingAnimation();
+        gotoPage(Page.LOGIN);
     }
 
     public static List<Command> getAvailableCommands() {

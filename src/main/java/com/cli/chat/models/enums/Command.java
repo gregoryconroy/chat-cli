@@ -18,7 +18,8 @@ public enum Command {
     SEND("send", List.of("<message>"), "send a message to the current user", "^send\\s+(.+)$"),
     SETTINGS("settings", List.of(), "go to settings page", "^settings$"),
     TIPS("tips", List.of("[show|hide]"), "show or hide available commands for a page", "^tips\\s+(show|hide)$"),
-    USERS("users", List.of(), "show list of all registerd users", "^users$");
+    USERS("users", List.of(), "show list of all registerd users", "^users$"),
+    CREATE_CONVERSATION("createconvo", List.of("<conversation name>"), "create a conversation", "^createconvo\\s+(.+)$");
 
     private final String name;
     private final List<String> params;

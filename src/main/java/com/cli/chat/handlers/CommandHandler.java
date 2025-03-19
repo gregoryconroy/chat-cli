@@ -47,12 +47,13 @@ public class CommandHandler {
 
         switch (command) {
             case CHATS -> StateHandler.showChats();
+            case CREATE_CONVERSATION -> StateHandler.createConversation(arguments.getFirst());
             case EXIT -> System.exit(0);
             case HELP -> StateHandler.showHelp();
             case SET_USERNAME -> StateHandler.createAccount(arguments.getFirst());
             case LOGOUT -> StateHandler.logout();
             case TIPS -> StateHandler.setTips(arguments.getFirst());
-            case OPEN_CHAT -> StateHandler.openConversation(arguments.getFirst());
+            case OPEN_CHAT -> StateHandler.showConversation(arguments.getFirst());
             case DELETE_CHAT -> StateHandler.deleteChats();
             case SEND -> StateHandler.sendMessage(arguments.getFirst());
             case USERS -> StateHandler.showUsers();

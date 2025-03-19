@@ -12,6 +12,7 @@ import com.cli.chat.dto.DirectMessageDTO;
 import com.cli.chat.exception.ApiResponseParsingException;
 import com.cli.chat.exception.UserNotFoundException;
 import com.cli.chat.models.records.Chat;
+import com.cli.chat.models.records.Conversation;
 import com.cli.chat.models.records.Message;
 import com.cli.chat.util.ConsolePrinter;
 import com.cli.chat.util.Delay;
@@ -65,7 +66,6 @@ public class ApiHandler {
         }
     }
 
-
     public static void createAccount(String username, String token) throws Exception {
         LoadingAnimation.startLoadingAnimation("Creating account");
         User newUser = new User(username);
@@ -74,6 +74,19 @@ public class ApiHandler {
             post("user/create", newUser, token);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
+    }
+
+    public static void createConversation(String conversationName) throws Exception {
+        LoadingAnimation.startLoadingAnimation("Creating account");
+
+        try {
+            Conversation newConversation = new Conversation(0, conversationName);
+            post("conversations?username=", newConversation, SessionInfo.getJWT());
+        } catch (Exception e) {
+            throw new Exception("Could not create conversation" + e.getMessage());
         } finally {
             LoadingAnimation.stopLoadingAnimation();
         }
@@ -123,8 +136,7 @@ public class ApiHandler {
             throw new RuntimeException("Request failed: " + e.getMessage(), e);
         }
     }
-
-
+    
     private static <T> void post(String endpoint, T requestBody, String token) {
         HttpRequest request;
         try {
@@ -147,6 +159,34 @@ public class ApiHandler {
                 throw new IOException("HTTP Error: " + response.statusCode() + " - " + response.body());
             }
 
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Request failed: " + e.getMessage(), e);
+        }
+    }
+
+    private static <T, R> R post(String endpoint, T requestBody, TypeReference<R> responseType, String token) {
+        HttpRequest request;
+        try {
+            String requestBodyJson = objectMapper.writeValueAsString(requestBody);
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(API_URL + endpoint))
+                    .header("Accept", "application/json")
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBodyJson))
+                    .build();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize request body", e);
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200 && response.statusCode() != 201) {
+                throw new IOException("HTTP Error: " + response.statusCode() + " - " + response.body());
+            }
+
+            return objectMapper.readValue(response.body(), responseType);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Request failed: " + e.getMessage(), e);
         }

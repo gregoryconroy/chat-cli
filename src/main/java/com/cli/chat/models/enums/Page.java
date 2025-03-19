@@ -26,7 +26,7 @@ public enum Page {
     public List<Command> getCurrentCommands() {
         return switch (this) {
             case LOGIN -> List.of();
-            case CHATS -> List.of(Command.OPEN_CHAT, Command.LOGOUT, Command.USERS);
+            case CHATS -> List.of(Command.OPEN_CHAT, Command.LOGOUT, Command.USERS, Command.CREATE_CONVERSATION);
             case SIGN_UP -> List.of(Command.SET_USERNAME);
             case CONVERSATION -> List.of(Command.CHATS, Command.SEND, Command.DELETE_CHAT, Command.LOGOUT);
         };
