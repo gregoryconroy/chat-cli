@@ -102,6 +102,10 @@ public class StateHandler {
         ConsolePrinter.printConversation(messages);
     }
 
+    public static void deleteChats(){
+        ApiHandler.deleteChat()
+    }
+
     public static void sendMessage(String message) {
         ApiHandler.sendMessage(SessionInfo.getUsername(), SessionInfo.getCurrentChat(), message, SessionInfo.getJWT());
     }

@@ -77,6 +77,10 @@ public class ApiHandler {
         ConsolePrinter.println("Message sent to: " + recipient);
     }
 
+    public static void deleteChats() {
+        
+    }
+
     private static <T> T get(String endpoint, TypeReference<T> responseType) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL + endpoint))
