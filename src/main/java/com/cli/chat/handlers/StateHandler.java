@@ -97,7 +97,6 @@ public class StateHandler {
     public static void showChats() {
         StateHandler.gotoPage(Page.CHATS);
         List<Chat> chats = ApiHandler.getChats();
-        ConsolePrinter.printChats(chats);
     }
 
     public static void showConversation(String conversationName) {

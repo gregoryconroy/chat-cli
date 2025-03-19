@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Objects;
 
 import com.cli.chat.data.SessionInfo;
 import com.cli.chat.dto.DirectMessageDTO;
@@ -56,7 +57,7 @@ public class ApiHandler {
         try {
             User newUser = get("user/check", new TypeReference<>() {}, SessionInfo.getJWT());
 
-            if (newUser.username() == null) {
+            if (Objects.isNull(newUser.username())) {
                 throw new UserNotFoundException("User doesn't exist");
             } else {
                 return newUser.username();
@@ -83,10 +84,10 @@ public class ApiHandler {
         LoadingAnimation.startLoadingAnimation("Creating account");
 
         try {
-            Conversation newConversation = new Conversation(0, conversationName);
+            Conversation newConversation = new Conversation(conversationName);
             post("conversations", newConversation, SessionInfo.getJWT());
         } catch (Exception e) {
-//            throw new Exception("Could not create conversation" + e.getMessage());
+            throw new Exception("Could not create conversation" + e.getMessage());
         } finally {
             LoadingAnimation.stopLoadingAnimation();
         }
