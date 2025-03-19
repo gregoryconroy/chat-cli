@@ -15,7 +15,7 @@ import java.util.List;
 
 public class StateHandler {
     private static Page currentPage;
-    private static boolean showTips = false;
+    private static boolean showTips = true;
 
     public static void init() {
         StateHandler.gotoPage(Page.LOGIN);
