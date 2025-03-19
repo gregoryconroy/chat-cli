@@ -83,10 +83,10 @@ public class ApiHandler {
         LoadingAnimation.startLoadingAnimation("Creating account");
 
         try {
-            Conversation newConversation = new Conversation(0, conversationName);
-            post("conversations", newConversation, SessionInfo.getJWT());
+            // Conversation newConversation = new Conversation(0, conversationName);
+            // post("conversations", newConversation, SessionInfo.getJWT());
         } catch (Exception e) {
-//            throw new Exception("Could not create conversation" + e.getMessage());
+        //    throw new Exception("Could not create conversation" + e.getMessage());
         } finally {
             LoadingAnimation.stopLoadingAnimation();
         }
@@ -100,8 +100,29 @@ public class ApiHandler {
         ConsolePrinter.println("Message sent to: " + recipient);
     }
 
-    public static void deleteChat() {
-        
+    public static void addConvoUser(String name, String conversationName) {
+        try {
+            List<User> users = getUsers();
+            
+            boolean userExists = users.stream().anyMatch(user -> user.username().equalsIgnoreCase(name));
+            
+            if (!userExists) {
+                ConsolePrinter.println("User '" + name + "' not found.");
+                return;
+            }
+            var requestBody = new Object() {
+                public final String username = name;
+                public final String conversationname = conversationName;
+            };
+            
+            post("conversation/user/add", requestBody, SessionInfo.getJWT());
+            
+            ConsolePrinter.println("User '" + name + "' has been added to conversation: " + conversationName);
+        } catch (Exception e) {
+            ConsolePrinter.println("Error adding user to conversation: " + e.getMessage());
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
     }
 
     private static <T> T get(String endpoint, TypeReference<T> responseType) throws Exception {

@@ -12,15 +12,16 @@ public enum Command {
     HELP("help", List.of(), "show a list of available commands and their descriptions", "^help$"),
     SET_USERNAME("setusername", List.of("<username>"), "set username for your account", "^setusername\\s+(\\S+)$"),
     LOGOUT("logout", List.of(), "log out of application", "^logout"),
-    OPEN_CHAT("openchat", List.of("<username>"), "open the conversation between you and the specified user", "^openchat\\s+([\\w-]+)$"),
+    OPEN_CONVO("openconvo", List.of("<conversation name>"), "open the conversation between you and the specified user", "^openconvo\\s+([\\w-]+)$"),
     PAGE_DOWN("pagedown", List.of(), "go down a page", "^pageup$"),
     PAGE_UP("pageup", List.of(), "go up a page", "^pageup$"),
     SEND("send", List.of("<message>"), "send a message to the current user", "^send\\s+(.+)$"),
     SETTINGS("settings", List.of(), "go to settings page", "^settings$"),
     TIPS("tips", List.of("[show|hide]"), "show or hide available commands for a page", "^tips\\s+(show|hide)$"),
     USERS("users", List.of(), "show list of all registerd users", "^users$"),
-    CREATE_CONVERSATION("createconvo", List.of("<conversation name>"), "create a conversation", "^createconvo\\s+(.+)$");
-
+    CREATE_CONVERSATION("createconvo", List.of("<conversation name>"), "create a conversation", "^createconvo\\s+(.+)$"),
+    ADD_CONVO_USER("adduser", List.of("<username>"), "add a user to the conversation", "^adduser\\s+(\\S+)$");
+   
     private final String name;
     private final List<String> params;
     private final String description;

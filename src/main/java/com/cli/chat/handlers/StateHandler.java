@@ -93,6 +93,14 @@ public class StateHandler {
             ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
         }
     }
+        
+    public static void addConvoUser(String name) {
+        try {
+            ApiHandler.addConvoUser(name, SessionInfo.getActiveConversation());
+        } catch (Exception e) {
+            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+        }
+    }
 
     public static void showChats() {
         StateHandler.gotoPage(Page.CHATS);
@@ -107,10 +115,6 @@ public class StateHandler {
         
         ConsolePrinter.println(conversationName, ConsolePrinter.YELLOW, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
         ConsolePrinter.blankln();
-    }
-
-    public static void deleteChats(){
-        ApiHandler.deleteChat();
     }
 
     public static void sendMessage(String message) {
