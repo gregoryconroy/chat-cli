@@ -3,7 +3,7 @@ package com.cli.chat.util;
 import com.cli.chat.data.SessionInfo;
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.enums.Page;
-import com.cli.chat.models.records.Chat;
+import com.cli.chat.models.records.Conversation;
 import com.cli.chat.models.records.Message;
 import com.cli.chat.models.records.User;
 
@@ -113,23 +113,23 @@ public class ConsolePrinter {
             else {
                 print(message.username(), BLUE, BOLD);
             }
-            println(" [" + message.time() + "]", YELLOW);
+            println(" [" + message.datetime().toLocalTime() + "]", YELLOW);
             println(message.message());
             blankln();
         });
     }
 
-    public static void printConversations(List<Chat> chats) {
+    public static void printConversations(List<Conversation> conversations) {
         Queue<String> colourQueue = new LinkedList<>();
         colourQueue.add(BLUE);
         colourQueue.add(MAGENTA);
         colourQueue.add(CYAN);
 
-        chats.forEach(chat -> {
+        conversations.forEach(conversation -> {
             String colour = colourQueue.remove();
-            print(chat.username(), colour, BOLD);
-            println(" [" + chat.time() + "]", YELLOW);
-            println(chat.message());
+            print(conversation.conversationName(), colour, BOLD);
+            println(" [" + conversation.datetime().toString() + "]", YELLOW);
+            println(conversation.lastMessage());
             colourQueue.add(colour);
             blankln();
         });

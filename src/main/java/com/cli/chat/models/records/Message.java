@@ -1,3 +1,5 @@
 package com.cli.chat.models.records;
 
-public record Message(String username, String message, String date, String time) {}
+import java.time.LocalDateTime;
+
+public record Message(String username, String message, LocalDateTime datetime) {}

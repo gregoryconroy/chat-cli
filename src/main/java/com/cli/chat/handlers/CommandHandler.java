@@ -53,7 +53,7 @@ public class CommandHandler {
             case SET_USERNAME -> StateHandler.createAccount(arguments.getFirst());
             case LOGOUT -> StateHandler.logout();
             case TIPS -> StateHandler.setTips(arguments.getFirst());
-            case OPEN_CONVO -> StateHandler.showConversation(arguments.getFirst());
+            case OPEN_CONVO -> StateHandler.openConversation(arguments.getFirst());
             case ADD_CONVO_USER -> StateHandler.addUserToConversation(arguments.getFirst());
             case REFRESH -> StateHandler.refresh();
             // case DELETE_CHAT -> StateHandler.deleteChats();

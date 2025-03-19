@@ -4,6 +4,7 @@ import com.cli.chat.data.SessionInfo;
 import com.cli.chat.exception.UserNotFoundException;
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.records.Chat;
+import com.cli.chat.models.records.Conversation;
 import com.cli.chat.models.records.Message;
 import com.cli.chat.models.records.User;
 import com.cli.chat.util.ConsolePrinter;
@@ -89,7 +90,7 @@ public class StateHandler {
     public static void createConversation(String conversationName) {
         try {
            ApiHandler.createConversation(conversationName);
-           showConversation(conversationName);
+           openConversation(conversationName);
         } catch (Exception e) {
             ConsolePrinter.printError(e.getMessage());
         }
@@ -107,20 +108,27 @@ public class StateHandler {
         StateHandler.gotoPage(Page.CHATS);
 
         try {
-            List<Chat> chats = ApiHandler.getConversations();
+            List<Conversation> chats = ApiHandler.getConversations();
             ConsolePrinter.printConversations(chats);
         } catch (Exception e) {
             ConsolePrinter.printError(e.getMessage());
         }
     }
 
-    public static void showConversation(String conversationName) {
+    public static void openConversation(String conversationName) {
         gotoPage(Page.CONVERSATION);
 
         SessionInfo.setActiveConversation(conversationName);
         
         ConsolePrinter.println(conversationName, ConsolePrinter.YELLOW, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
         ConsolePrinter.blankln();
+
+        try {
+            List<Message> messages = ApiHandler.getMessages(conversationName);
+            ConsolePrinter.printConversation(messages);
+        } catch (Exception e) {
+            ConsolePrinter.printError(e.getMessage());
+        }
     }
 
     public static void sendMessage(String message) {

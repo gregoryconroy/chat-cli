@@ -13,7 +13,7 @@ import java.util.Objects;
 import com.cli.chat.data.SessionInfo;
 import com.cli.chat.exception.ApiResponseParsingException;
 import com.cli.chat.exception.UserNotFoundException;
-import com.cli.chat.models.records.Chat;
+import com.cli.chat.models.records.Conversation;
 import com.cli.chat.models.records.Message;
 import com.cli.chat.util.ConsolePrinter;
 import com.cli.chat.util.Delay;
@@ -57,7 +57,7 @@ public class ApiHandler {
         }
     }
 
-    public static List<Chat> getConversations() throws Exception {
+    public static List<Conversation> getConversations() throws Exception {
         LoadingAnimation.startLoadingAnimation("Retrieving conversation list");
         try {
             return get("conversations/list", new TypeReference<>() {}, SessionInfo.getJWT());
@@ -71,8 +71,7 @@ public class ApiHandler {
     public static List<Message> getMessages(String conversationName) throws Exception {
         LoadingAnimation.startLoadingAnimation("Retrieving messages");
         try {
-//            return get("conversation/show/" + conversationName, new TypeReference<>() {});
-            return getFile("src/main/java/com/cli/chat/data/messages.json", new TypeReference<>() {});
+            return get("conversations/show/" + conversationName, new TypeReference<>() {}, SessionInfo.getJWT());
         } catch (Exception e) {
             throw new Exception(e);
         } finally {
