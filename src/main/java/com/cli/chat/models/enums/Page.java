@@ -6,8 +6,10 @@ import java.util.List;
 public enum Page {
     LOGIN("Login"),
     SIGN_UP("Sign Up"),
-    CHATS("Conversation List"),
-    CONVERSATION("Conversation");
+    CONVERSATION_LIST("Conversation List"),
+    CONVERSATION("Conversation"),
+    USER_LIST("User List");
+
 
     private final String displayName;
 
@@ -26,9 +28,10 @@ public enum Page {
     public List<Command> getCurrentCommands() {
         return switch (this) {
             case LOGIN -> List.of();
-            case CHATS -> List.of(Command.OPEN_CONVO, Command.LOGOUT, Command.USERS, Command.CREATE_CONVO, Command.REFRESH);
+            case CONVERSATION_LIST -> List.of(Command.OPEN_CONVO, Command.LOGOUT, Command.USERS, Command.CREATE_CONVO, Command.REFRESH);
             case SIGN_UP -> List.of(Command.SET_USERNAME);
-            case CONVERSATION -> List.of(Command.ADD_CONVO_USER, Command.CHATS, Command.SEND_MESSAGE, Command.DELETE_CHAT, Command.LOGOUT, Command.REFRESH);
+            case CONVERSATION -> List.of(Command.ADD_CONVO_USER, Command.CHATS, Command.USERS, Command.SEND_MESSAGE, Command.DELETE_CHAT, Command.LOGOUT, Command.REFRESH);
+            case USER_LIST -> List.of(Command.CHATS);
         };
     }
 

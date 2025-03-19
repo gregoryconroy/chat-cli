@@ -105,7 +105,7 @@ public class StateHandler {
     }
 
     public static void showConversations() {
-        StateHandler.gotoPage(Page.CHATS);
+        StateHandler.gotoPage(Page.CONVERSATION_LIST);
 
         try {
             List<Conversation> chats = ApiHandler.getConversations();
@@ -143,7 +143,7 @@ public class StateHandler {
 
     public static void refresh(){
         switch (currentPage) {
-            case Page.CHATS -> showConversations();
+            case Page.CONVERSATION_LIST -> showConversations();
             case Page.CONVERSATION -> openConversation(SessionInfo.getActiveConversation());
         }
     }
@@ -154,8 +154,14 @@ public class StateHandler {
     }
 
     public static void showUsers() {
-        List<User> users = ApiHandler.getUsers();
-        ConsolePrinter.printUsers(users);
+        try {
+            List<User> users = ApiHandler.getUsers();
+
+            gotoPage(Page.USER_LIST);
+            ConsolePrinter.printUsers(users);
+        } catch (Exception e) {
+            ConsolePrinter.printError(e.getMessage());
+        }
     }
 
     public static void logout() {

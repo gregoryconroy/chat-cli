@@ -116,7 +116,10 @@ public class ConsolePrinter {
                             println(message.message());
                             blankln();
                         }),
-                        () -> println("No messages in this conversation.", RED) // Runs if list is empty
+                        () -> {
+                            println("No messages in this conversation.", RED);
+                            blankln();
+                        }
                 );
     }
 
@@ -155,7 +158,9 @@ public class ConsolePrinter {
 
     public static void printUsers(List<User> users) {
         users.forEach(user -> {
-            ConsolePrinter.println(user.username(), BLUE, BOLD);
+            println(user.username(), BLUE, BOLD);
+            println(user.email(), GREEN);
+            blankln();
         });
     }
 

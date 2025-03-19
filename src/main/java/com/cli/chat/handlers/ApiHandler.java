@@ -128,12 +128,15 @@ public class ApiHandler {
         }
     }
 
-    public static List<User> getUsers() {
+    public static List<User> getUsers() throws Exception {
         LoadingAnimation.startLoadingAnimation("Retrieving user list");
-//        List<User> users = get("user/list", new TypeReference<>() {});
-        List<User> users = getFile("src/main/java/com/cli/chat/data/users.json", new TypeReference<>() {});
-        LoadingAnimation.stopLoadingAnimation();
-        return users;
+        try {
+            return get("user/list", new TypeReference<>() {}, SessionInfo.getJWT());
+        } catch (Exception e) {
+            throw new Exception(e);
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
     }
 
     private static <T> T get(String endpoint, TypeReference<T> responseType, String token) throws Exception {
