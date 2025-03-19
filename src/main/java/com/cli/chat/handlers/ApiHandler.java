@@ -56,23 +56,24 @@ public class ApiHandler {
 
     public static void createAccount(String username, String token) {
         LoadingAnimation.startLoadingAnimation("Creating account");
-        new Delay(200);
-        // try {
-        //     User newUser = new User(username, token);
+        // new Delay(200);
+        try {
+            User newUser = new User(username);
             
-        //     User createdUser = post("user/create", newUser, new TypeReference<User>() {});
+            User createdUser = post("user/create", newUser, new TypeReference<User>() {}, token);
             
-        //     System.out.println("Account created successfully: " + createdUser.username());
-        // } catch (Exception e) {
-        //     System.out.println("Error creating account: " + e.getMessage());
-        // }
+            System.out.println("Account created successfully: " + createdUser.username());
+        } catch (Exception e) {
+            System.out.println("Error creating account: " + e.getMessage());
+        }
         LoadingAnimation.stopLoadingAnimation();
     }
 
-    public static void sendMessage(String sender, String recipient, String message) {
+    public static void sendMessage(String sender, String recipient, String message, String token) {
+
         DirectMessageDTO newMessage = new DirectMessageDTO(sender, recipient, message);
 
-        post("conversation/send", newMessage, new TypeReference<Message>() {});
+        post("conversation/send", newMessage, new TypeReference<Message>() {}, token);
         ConsolePrinter.println("Message sent to: " + recipient);
     }
 
@@ -97,7 +98,7 @@ public class ApiHandler {
         }
     }
 
-    private static <T, R> R post(String endpoint, T requestBody, TypeReference<R> responseType) {
+    private static <T, R> R post(String endpoint, T requestBody, TypeReference<R> responseType, String token) {
         HttpRequest request;
         try {
             String requestBodyJson = objectMapper.writeValueAsString(requestBody);
@@ -105,6 +106,7 @@ public class ApiHandler {
                     .uri(URI.create(API_URL + endpoint))
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + token)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBodyJson))
                     .build();
         } catch (JsonProcessingException e) {

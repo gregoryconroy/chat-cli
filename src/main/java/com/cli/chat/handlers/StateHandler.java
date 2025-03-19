@@ -103,7 +103,7 @@ public class StateHandler {
     }
 
     public static void sendMessage(String message) {
-        ApiHandler.sendMessage(SessionInfo.getUsername(), SessionInfo.getCurrentChat(), message);
+        ApiHandler.sendMessage(SessionInfo.getUsername(), SessionInfo.getCurrentChat(), message, SessionInfo.getJWT());
     }
 
     public static void showHelp() {
