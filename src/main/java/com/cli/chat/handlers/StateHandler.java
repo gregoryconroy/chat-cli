@@ -3,7 +3,6 @@ package com.cli.chat.handlers;
 import com.cli.chat.data.SessionInfo;
 import com.cli.chat.exception.UserNotFoundException;
 import com.cli.chat.models.enums.Command;
-import com.cli.chat.models.records.Chat;
 import com.cli.chat.models.records.Conversation;
 import com.cli.chat.models.records.Message;
 import com.cli.chat.models.records.User;
