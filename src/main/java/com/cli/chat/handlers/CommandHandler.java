@@ -46,7 +46,7 @@ public class CommandHandler {
         List<String> arguments = parsedCommand.arguments();
 
         switch (command) {
-            case CHATS -> StateHandler.showChats();
+            case CHATS -> StateHandler.showConversations();
             case CREATE_CONVO -> StateHandler.createConversation(arguments.getFirst());
             case EXIT -> System.exit(0);
             case HELP -> StateHandler.showHelp();
@@ -55,6 +55,7 @@ public class CommandHandler {
             case TIPS -> StateHandler.setTips(arguments.getFirst());
             case OPEN_CONVO -> StateHandler.showConversation(arguments.getFirst());
             case ADD_CONVO_USER -> StateHandler.addConvoUser(arguments.getFirst());
+            case REFRESH -> StateHandler.refresh();
             // case DELETE_CHAT -> StateHandler.deleteChats();
             case SEND_MESSAGE -> StateHandler.sendMessage(arguments.getFirst());
             case USERS -> StateHandler.showUsers();

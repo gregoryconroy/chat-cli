@@ -38,15 +38,15 @@ public class ApiHandler {
         return users;
     }
 
-    public static List<Message> getMessages(String username) {
+    public static List<Message> getMessages(String conversationName) {
         LoadingAnimation.startLoadingAnimation("Retrieving messages");
-//      List<Message> messages = get("conversation/" + username, new TypeReference<>() {});
+//      List<Message> messages = get("conversation/" + conversationName, new TypeReference<>() {});
         List<Message> messages = getFile("src/main/java/com/cli/chat/data/messages.json", new TypeReference<>() {});
         LoadingAnimation.stopLoadingAnimation();
         return messages;
     }
 
-    public static List<Chat> getChats() {
+    public static List<Chat> getConversations() {
         LoadingAnimation.startLoadingAnimation("Retrieving conversation list");
 //        List<Chat> chats = get("chats", new TypeReference<>() {});
         List<Chat> chats = getFile("src/main/java/com/cli/chat/data/chats.json", new TypeReference<>() {});
@@ -98,7 +98,6 @@ public class ApiHandler {
     }
 
     public static void sendMessage(String recipient, String message) throws Exception {
-
         try {
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("conversationName", recipient);

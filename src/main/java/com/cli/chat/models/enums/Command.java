@@ -20,7 +20,8 @@ public enum Command {
     USERS("users", List.of(), "show list of all registerd users", "^users$"),
     CREATE_CONVO("createconvo", List.of("<conversation name>"), "create a conversation", "^createconvo\\s+(.+)$"),
     ADD_CONVO_USER("adduser", List.of("<username>"), "add a user to the conversation", "^adduser\\s+(\\S+)$"),
-    SEND_MESSAGE("send", List.of("<message>"), "send a message in the current conversation", "^send\\s+(.+)$");
+    SEND_MESSAGE("send", List.of("<message>"), "send a message in the current conversation", "^send\\s+(.+)$"),
+    REFRESH("refresh", List.of(), "refresh", "^refresh");
 
     private final String name;
     private final List<String> params;

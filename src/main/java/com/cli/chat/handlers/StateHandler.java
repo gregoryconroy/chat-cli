@@ -64,7 +64,7 @@ public class StateHandler {
         ConsolePrinter.print(SessionInfo.getUsername(), ConsolePrinter.BLUE, ConsolePrinter.BOLD);
         ConsolePrinter.print("!");
         new Delay(3000);
-        showChats();
+        showConversations();
     }
 
     private static void showPageInfo() {
@@ -102,9 +102,10 @@ public class StateHandler {
         }
     }
 
-    public static void showChats() {
+    public static void showConversations() {
         StateHandler.gotoPage(Page.CHATS);
-        List<Chat> chats = ApiHandler.getChats();
+        List<Chat> chats = ApiHandler.getConversations();
+        ConsolePrinter.printChats(chats);
     }
 
     public static void showConversation(String conversationName) {
@@ -122,6 +123,10 @@ public class StateHandler {
         } catch (Exception e) {
             ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
         }
+    }
+
+    public static void refresh(){
+        ApiHandler.getMessages(SessionInfo.getActiveConversation());
     }
 
     public static void showHelp() {
