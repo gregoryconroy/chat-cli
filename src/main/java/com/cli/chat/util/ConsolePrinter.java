@@ -119,7 +119,7 @@ public class ConsolePrinter {
         });
     }
 
-    public static void printChats(List<Chat> chats) {
+    public static void printConversations(List<Chat> chats) {
         Queue<String> colourQueue = new LinkedList<>();
         colourQueue.add(BLUE);
         colourQueue.add(MAGENTA);
@@ -133,6 +133,10 @@ public class ConsolePrinter {
             colourQueue.add(colour);
             blankln();
         });
+    }
+
+    public static void printError(String error) {
+        println(error, RED, BOLD, UNDERLINE);
     }
 
     public static void printUsers(List<User> users) {

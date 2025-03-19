@@ -11,11 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.cli.chat.data.SessionInfo;
-import com.cli.chat.dto.DirectMessageDTO;
 import com.cli.chat.exception.ApiResponseParsingException;
 import com.cli.chat.exception.UserNotFoundException;
 import com.cli.chat.models.records.Chat;
-import com.cli.chat.models.records.Conversation;
 import com.cli.chat.models.records.Message;
 import com.cli.chat.util.ConsolePrinter;
 import com.cli.chat.util.Delay;
@@ -38,20 +36,27 @@ public class ApiHandler {
         return users;
     }
 
-    public static List<Message> getMessages(String conversationName) {
+    public static List<Message> getMessages(String conversationName) throws Exception {
         LoadingAnimation.startLoadingAnimation("Retrieving messages");
-//      List<Message> messages = get("conversation/" + conversationName, new TypeReference<>() {});
-        List<Message> messages = getFile("src/main/java/com/cli/chat/data/messages.json", new TypeReference<>() {});
-        LoadingAnimation.stopLoadingAnimation();
-        return messages;
+        try {
+//            return get("conversation/" + conversationName, new TypeReference<>() {});
+            return getFile("src/main/java/com/cli/chat/data/messages.json", new TypeReference<>() {});
+        } catch (Exception e) {
+            throw new Exception(e);
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
     }
 
-    public static List<Chat> getConversations() {
+    public static List<Chat> getConversations() throws Exception {
         LoadingAnimation.startLoadingAnimation("Retrieving conversation list");
-//        List<Chat> chats = get("chats", new TypeReference<>() {});
-        List<Chat> chats = getFile("src/main/java/com/cli/chat/data/chats.json", new TypeReference<>() {});
-        LoadingAnimation.stopLoadingAnimation();
-        return chats;
+        try {
+            return get("chats", new TypeReference<>() {});
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
     }
 
     public static String getUsername() throws Exception {
@@ -112,13 +117,13 @@ public class ApiHandler {
 
     }
 
-    public static void addConvoUser(String name, String conversationName) {
+    public static void addUserToConversation(String name, String conversationName) {
         try {
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("username", name);
             requestBody.put("conversationName", conversationName);
 
-            post("conversations/user/add", requestBody, SessionInfo.getJWT());
+            post("conversations/add-user", requestBody, SessionInfo.getJWT());
         } catch (Exception e) {
             ConsolePrinter.println("Error adding user to conversation: " + e.getMessage());
         } finally {

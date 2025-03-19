@@ -54,7 +54,7 @@ public class CommandHandler {
             case LOGOUT -> StateHandler.logout();
             case TIPS -> StateHandler.setTips(arguments.getFirst());
             case OPEN_CONVO -> StateHandler.showConversation(arguments.getFirst());
-            case ADD_CONVO_USER -> StateHandler.addConvoUser(arguments.getFirst());
+            case ADD_CONVO_USER -> StateHandler.addUserToConversation(arguments.getFirst());
             case REFRESH -> StateHandler.refresh();
             // case DELETE_CHAT -> StateHandler.deleteChats();
             case SEND_MESSAGE -> StateHandler.sendMessage(arguments.getFirst());

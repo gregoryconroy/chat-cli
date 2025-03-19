@@ -4,6 +4,7 @@ import com.cli.chat.data.SessionInfo;
 import com.cli.chat.exception.UserNotFoundException;
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.records.Chat;
+import com.cli.chat.models.records.Message;
 import com.cli.chat.models.records.User;
 import com.cli.chat.util.ConsolePrinter;
 import com.cli.chat.models.enums.Page;
@@ -30,7 +31,7 @@ public class StateHandler {
             new Delay(2000);
             StateHandler.showSignUp();
         } catch (Exception e) {
-            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+            ConsolePrinter.printError(e.getMessage());
             new Delay(5000);
             gotoPage(Page.LOGIN);
         }
@@ -53,7 +54,7 @@ public class StateHandler {
             SessionInfo.setUsername(username);
             showWelcome();
         } catch (Exception e) {
-            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+            ConsolePrinter.printError(e.getMessage());
             new Delay(10000);
             showSignUp();
         }
@@ -90,22 +91,27 @@ public class StateHandler {
            ApiHandler.createConversation(conversationName);
            showConversation(conversationName);
         } catch (Exception e) {
-            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+            ConsolePrinter.printError(e.getMessage());
         }
     }
         
-    public static void addConvoUser(String name) {
+    public static void addUserToConversation(String name) {
         try {
-            ApiHandler.addConvoUser(name, SessionInfo.getActiveConversation());
+            ApiHandler.addUserToConversation(name, SessionInfo.getActiveConversation());
         } catch (Exception e) {
-            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+            ConsolePrinter.printError(e.getMessage());
         }
     }
 
     public static void showConversations() {
         StateHandler.gotoPage(Page.CHATS);
-        List<Chat> chats = ApiHandler.getConversations();
-        ConsolePrinter.printChats(chats);
+
+        try {
+            List<Chat> chats = ApiHandler.getConversations();
+            ConsolePrinter.printConversations(chats);
+        } catch (Exception e) {
+            ConsolePrinter.printError(e.getMessage());
+        }
     }
 
     public static void showConversation(String conversationName) {
@@ -121,12 +127,18 @@ public class StateHandler {
         try {
             ApiHandler.sendMessage(SessionInfo.getActiveConversation(), message);
         } catch (Exception e) {
-            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+            ConsolePrinter.printError(e.getMessage());
         }
     }
 
     public static void refresh(){
-        ApiHandler.getMessages(SessionInfo.getActiveConversation());
+        try {
+            List<Message> messages = ApiHandler.getMessages(SessionInfo.getActiveConversation());
+            showPageInfo();
+            ConsolePrinter.printConversation(messages);
+        } catch (Exception e) {
+            ConsolePrinter.printError(e.getMessage());
+        }
     }
 
     public static void showHelp() {
