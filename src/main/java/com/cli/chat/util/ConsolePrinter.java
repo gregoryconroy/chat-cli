@@ -8,6 +8,8 @@ import com.cli.chat.models.records.Message;
 import com.cli.chat.models.records.User;
 
 import java.util.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class ConsolePrinter {
 
@@ -106,13 +108,14 @@ public class ConsolePrinter {
     }
 
     public static void printConversation(List<Message> messages) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         Optional.of(messages)
                 .filter(list -> !list.isEmpty())
                 .ifPresentOrElse(
                         list -> list.forEach(message -> {
                             print(Objects.equals(message.username(), SessionInfo.getUsername()) ? "You" : message.username(),
                                     Objects.equals(message.username(), SessionInfo.getUsername()) ? CYAN : BLUE, BOLD);
-                            println(" [" + message.datetime().toLocalTime() + "]", YELLOW);
+                            println(" [" + message.datetime().toLocalTime().format(formatter) + "]", YELLOW);
                             println(message.message());
                             blankln();
                         }),
