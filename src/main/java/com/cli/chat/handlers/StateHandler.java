@@ -83,10 +83,6 @@ public class StateHandler {
         }
     }
 
-    public static void login() {
-        showChats();
-    }
-
     public static void logout() {
         LoadingAnimation.startLoadingAnimation("Logging out");
         LoadingAnimation.stopLoadingAnimation();
@@ -100,7 +96,7 @@ public class StateHandler {
         
         ConsolePrinter.print("Conversation with: ");
         ConsolePrinter.println(username, ConsolePrinter.BLUE, ConsolePrinter.BOLD);
-        ConsolePrinter.println("");
+        ConsolePrinter.blankln();
 
         List<Message> messages = ApiHandler.getMessages(username);
         ConsolePrinter.printConversation(messages);
@@ -111,7 +107,7 @@ public class StateHandler {
     }
 
     public static void showHelp() {
-        ConsolePrinter.println("");
+        ConsolePrinter.blankln();
         ConsolePrinter.printPageHelp(currentPage);
     }
 

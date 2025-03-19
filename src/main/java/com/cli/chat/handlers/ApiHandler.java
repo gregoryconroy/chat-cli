@@ -49,7 +49,7 @@ public class ApiHandler {
 
     public static String getUsername(String username) {
         LoadingAnimation.startLoadingAnimation("Checking if account exists");
-        new Delay(2000);
+        new Delay(2000); // TODO: Add API call to check if account exists
         LoadingAnimation.stopLoadingAnimation();
         return username;
     }
@@ -70,7 +70,6 @@ public class ApiHandler {
     }
 
     public static void sendMessage(String sender, String recipientUsername, String message) {
-
         DirectMessageDTO newMessage = new DirectMessageDTO(sender, recipientUsername, message);
 
         post("conversation/send", newMessage, new TypeReference<Message>() {});

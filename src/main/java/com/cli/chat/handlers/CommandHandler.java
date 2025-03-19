@@ -59,11 +59,11 @@ public class CommandHandler {
     }
 
     private static void handleInvalidCommand() {
-        ConsolePrinter.println("");
+        ConsolePrinter.blankln();
         ConsolePrinter.print("Invalid command", ConsolePrinter.RED, ConsolePrinter.BOLD);
         ConsolePrinter.print(" - type ");
         ConsolePrinter.print("help", ConsolePrinter.GREEN, ConsolePrinter.BOLD);
         ConsolePrinter.println(" for a list of available commands");
-        ConsolePrinter.println("");
+        ConsolePrinter.blankln();
     }
 }

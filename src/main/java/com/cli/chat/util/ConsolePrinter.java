@@ -67,6 +67,10 @@ public class ConsolePrinter {
         System.out.println(formattedText);
     }
 
+    public static void blankln() {
+        System.out.println();
+    }
+
     public static void printCommand(Command command) {
         String paramString = String.join(" ", command.getParams());
 
@@ -88,17 +92,17 @@ public class ConsolePrinter {
         print("Available commands for the ");
         print(page.getDisplayName() + " Page", BLUE, BOLD);
         println(":");
-        println("");
+        blankln();
         commands.forEach(ConsolePrinter::printCommand);
-        println("");
+        blankln();
     }
 
     public static void printPage(String displayName) {
-        println("");
+        blankln();
         print("--- ", BOLD);
         print(displayName + " Page", BLUE, BOLD);
         println(" ---", BOLD);
-        println("");
+        blankln();
     }
 
     public static void printConversation(List<Message> messages) {
@@ -111,7 +115,7 @@ public class ConsolePrinter {
             }
             println(" [" + message.time() + "]", YELLOW);
             println(message.message());
-            println("");
+            blankln();
         });
     }
 
@@ -127,7 +131,7 @@ public class ConsolePrinter {
             println(" [" + chat.time() + "]", YELLOW);
             println(chat.message());
             colourQueue.add(colour);
-            println("");
+            blankln();
         });
     }
 
