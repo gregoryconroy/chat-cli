@@ -28,37 +28,6 @@ public class ApiHandler {
     private static final String API_URL = "http://ec2-13-246-228-91.af-south-1.compute.amazonaws.com:8080/";
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static List<User> getUsers() {
-        LoadingAnimation.startLoadingAnimation("Retrieving user list");
-//        List<User> users = get("user/list", new TypeReference<>() {});
-        List<User> users = getFile("src/main/java/com/cli/chat/data/users.json", new TypeReference<>() {});
-        LoadingAnimation.stopLoadingAnimation();
-        return users;
-    }
-
-    public static List<Message> getMessages(String conversationName) throws Exception {
-        LoadingAnimation.startLoadingAnimation("Retrieving messages");
-        try {
-//            return get("conversation/" + conversationName, new TypeReference<>() {});
-            return getFile("src/main/java/com/cli/chat/data/messages.json", new TypeReference<>() {});
-        } catch (Exception e) {
-            throw new Exception(e);
-        } finally {
-            LoadingAnimation.stopLoadingAnimation();
-        }
-    }
-
-    public static List<Chat> getConversations() throws Exception {
-        LoadingAnimation.startLoadingAnimation("Retrieving conversation list");
-        try {
-            return get("chats", new TypeReference<>() {});
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        } finally {
-            LoadingAnimation.stopLoadingAnimation();
-        }
-    }
-
     public static String getUsername() throws Exception {
         LoadingAnimation.startLoadingAnimation("Checking if account exists");
         try {
@@ -88,6 +57,43 @@ public class ApiHandler {
         }
     }
 
+    public static List<Chat> getConversations() throws Exception {
+        LoadingAnimation.startLoadingAnimation("Retrieving conversation list");
+        try {
+            return get("conversations/list", new TypeReference<>() {}, SessionInfo.getJWT());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
+    }
+
+    public static List<Message> getMessages(String conversationName) throws Exception {
+        LoadingAnimation.startLoadingAnimation("Retrieving messages");
+        try {
+//            return get("conversation/show/" + conversationName, new TypeReference<>() {});
+            return getFile("src/main/java/com/cli/chat/data/messages.json", new TypeReference<>() {});
+        } catch (Exception e) {
+            throw new Exception(e);
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
+    }
+
+    public static void sendMessage(String recipient, String message) throws Exception {
+        try {
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("conversationName", recipient);
+            requestBody.put("message", message);
+
+            post("conversations/message", requestBody, SessionInfo.getJWT());
+        } catch (Exception e) {
+            throw new Exception("Could not send message" + e.getMessage());
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
+    }
+
     public static void createConversation(String conversationName) throws Exception {
         LoadingAnimation.startLoadingAnimation("Creating account");
         try {
@@ -100,21 +106,6 @@ public class ApiHandler {
         } finally {
             LoadingAnimation.stopLoadingAnimation();
         }
-    }
-
-    public static void sendMessage(String recipient, String message) throws Exception {
-        try {
-            Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("conversationName", recipient);
-            requestBody.put("message", message);
-
-            post("conversations/send", requestBody, SessionInfo.getJWT());
-        } catch (Exception e) {
-            throw new Exception("Could not send message" + e.getMessage());
-        } finally {
-            LoadingAnimation.stopLoadingAnimation();
-        }
-
     }
 
     public static void addUserToConversation(String name, String conversationName) {
@@ -131,8 +122,12 @@ public class ApiHandler {
         }
     }
 
-    private static <T> T get(String endpoint, TypeReference<T> responseType) throws Exception {
-        return get(endpoint, responseType, "");
+    public static List<User> getUsers() {
+        LoadingAnimation.startLoadingAnimation("Retrieving user list");
+//        List<User> users = get("user/list", new TypeReference<>() {});
+        List<User> users = getFile("src/main/java/com/cli/chat/data/users.json", new TypeReference<>() {});
+        LoadingAnimation.stopLoadingAnimation();
+        return users;
     }
 
     private static <T> T get(String endpoint, TypeReference<T> responseType, String token) throws Exception {
