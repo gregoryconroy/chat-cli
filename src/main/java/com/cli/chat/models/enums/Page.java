@@ -6,7 +6,7 @@ import java.util.List;
 public enum Page {
     LOGIN("Login"),
     SIGN_UP("Sign Up"),
-    CHATS("Chats"),
+    CHATS("Conversation List"),
     CONVERSATION("Conversation");
 
     private final String displayName;

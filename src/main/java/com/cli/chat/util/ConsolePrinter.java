@@ -100,7 +100,7 @@ public class ConsolePrinter {
     public static void printPage(String displayName) {
         blankln();
         print("--- ", BOLD);
-        print(displayName + " Page", BLUE, BOLD);
+        print(displayName, BLUE, BOLD);
         println(" ---", BOLD);
         blankln();
     }

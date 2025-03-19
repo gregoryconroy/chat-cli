@@ -25,7 +25,7 @@ public class SessionInfo {
         return currentChat;
     }
 
-    public static void setCurrentChat(String currentChat) {
+    public static void setActiveConversation(String currentChat) {
         SessionInfo.currentChat = currentChat;
     }
 }

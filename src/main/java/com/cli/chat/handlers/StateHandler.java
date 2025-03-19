@@ -4,7 +4,6 @@ import com.cli.chat.data.SessionInfo;
 import com.cli.chat.exception.UserNotFoundException;
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.records.Chat;
-import com.cli.chat.models.records.Message;
 import com.cli.chat.models.records.User;
 import com.cli.chat.util.ConsolePrinter;
 import com.cli.chat.models.enums.Page;
@@ -104,14 +103,10 @@ public class StateHandler {
     public static void showConversation(String conversationName) {
         gotoPage(Page.CONVERSATION);
 
-        SessionInfo.setCurrentChat(conversationName);
+        SessionInfo.setActiveConversation(conversationName);
         
-        ConsolePrinter.print("Conversation with: ");
-        ConsolePrinter.println(conversationName, ConsolePrinter.BLUE, ConsolePrinter.BOLD);
+        ConsolePrinter.println(conversationName, ConsolePrinter.YELLOW, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
         ConsolePrinter.blankln();
-
-        List<Message> messages = ApiHandler.getMessages(conversationName);
-        ConsolePrinter.printConversation(messages);
     }
 
     public static void deleteChats(){

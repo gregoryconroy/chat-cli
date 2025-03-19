@@ -43,8 +43,8 @@ public class ApiHandler {
         return messages;
     }
 
-    public static List<Chat> getChats() {
-        LoadingAnimation.startLoadingAnimation("Retrieving chats");
+    public static List<Chat> getChats() {c
+        LoadingAnimation.startLoadingAnimation("Retrieving conversation list");
 //        List<Chat> chats = get("chats", new TypeReference<>() {});
         List<Chat> chats = getFile("src/main/java/com/cli/chat/data/chats.json", new TypeReference<>() {});
         LoadingAnimation.stopLoadingAnimation();
@@ -86,7 +86,7 @@ public class ApiHandler {
             Conversation newConversation = new Conversation(0, conversationName);
             post("conversations", newConversation, SessionInfo.getJWT());
         } catch (Exception e) {
-            throw new Exception("Could not create conversation" + e.getMessage());
+//            throw new Exception("Could not create conversation" + e.getMessage());
         } finally {
             LoadingAnimation.stopLoadingAnimation();
         }
