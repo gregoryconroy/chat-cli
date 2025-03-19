@@ -115,22 +115,11 @@ public class ApiHandler {
 
     public static void addConvoUser(String name, String conversationName) {
         try {
-            List<User> users = getUsers();
-            
-            boolean userExists = users.stream().anyMatch(user -> user.username().equalsIgnoreCase(name));
-            
-            if (!userExists) {
-                ConsolePrinter.println("User '" + name + "' not found.");
-                return;
-            }
-            var requestBody = new Object() {
-                public final String username = name;
-                public final String conversationname = conversationName;
-            };
-            
-            post("conversation/user/add", requestBody, SessionInfo.getJWT());
-            
-            ConsolePrinter.println("User '" + name + "' has been added to conversation: " + conversationName);
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("username", name);
+            requestBody.put("conversationName", conversationName);
+
+            post("conversations/user/add", requestBody, SessionInfo.getJWT());
         } catch (Exception e) {
             ConsolePrinter.println("Error adding user to conversation: " + e.getMessage());
         } finally {
