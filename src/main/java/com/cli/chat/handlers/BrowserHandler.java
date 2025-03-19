@@ -17,7 +17,6 @@ public class BrowserHandler {
     private static final CountDownLatch latch = new CountDownLatch(1);
 
     public static String getToken() {
-
         LoadingAnimation.startLoadingAnimation("Awaiting login");
 
         try {

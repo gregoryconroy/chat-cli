@@ -1,6 +1,8 @@
 package com.cli.chat.handlers;
 
 import com.cli.chat.data.SessionInfo;
+import com.cli.chat.exception.ApiResponseParsingException;
+import com.cli.chat.exception.UserNotFoundException;
 import com.cli.chat.models.enums.Command;
 import com.cli.chat.models.records.Chat;
 import com.cli.chat.models.records.Message;
@@ -20,13 +22,19 @@ public class StateHandler {
         StateHandler.gotoPage(Page.LOGIN);
         String token = BrowserHandler.getToken();
         SessionInfo.setJWT(token);
-        String username = ApiHandler.getUsername(null);
 
-        if (username != null) {
+        try {
+            String username = ApiHandler.getUsername();
             SessionInfo.setUsername(username);
             showWelcome();
-        } else {
+        } catch (UserNotFoundException e) {
+            ConsolePrinter.println(e.getMessage(), ConsolePrinter.BLUE);
+            new Delay(2000);
             StateHandler.showSignUp();
+        } catch (Exception e) {
+            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+            new Delay(5000);
+            gotoPage(Page.LOGIN);
         }
     }
 
@@ -40,22 +48,24 @@ public class StateHandler {
     }
 
     public static void createAccount(String username) {
+        String token = SessionInfo.getJWT();
+
         try {
-            String token = SessionInfo.getJWT();
             ApiHandler.createAccount(username, token);
             SessionInfo.setUsername(username);
             showWelcome();
         } catch (Exception e) {
-            ConsolePrinter.println("Account creation failed: " + e.getMessage());
+            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+            new Delay(10000);
+            showSignUp();
         }
     }
 
     public static void showWelcome() {
-        ConsolePrinter.clearConsole();
         ConsolePrinter.print("Welcome ");
         ConsolePrinter.print(SessionInfo.getUsername(), ConsolePrinter.BLUE, ConsolePrinter.BOLD);
-        ConsolePrinter.println("!");
-        new Delay(5000);
+        ConsolePrinter.print("!");
+        new Delay(3000);
         showChats();
     }
 
@@ -103,7 +113,7 @@ public class StateHandler {
     }
 
     public static void deleteChats(){
-        ApiHandler.deleteChat()
+        ApiHandler.deleteChat();
     }
 
     public static void sendMessage(String message) {

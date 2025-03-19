@@ -7,7 +7,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+import com.cli.chat.data.SessionInfo;
 import com.cli.chat.dto.DirectMessageDTO;
+import com.cli.chat.exception.ApiResponseParsingException;
+import com.cli.chat.exception.UserNotFoundException;
 import com.cli.chat.models.records.Chat;
 import com.cli.chat.models.records.Message;
 import com.cli.chat.util.ConsolePrinter;
@@ -41,50 +44,62 @@ public class ApiHandler {
 
     public static List<Chat> getChats() {
         LoadingAnimation.startLoadingAnimation("Retrieving chats");
-//      List<Chat> chats = get("chats", new TypeReference<>() {});
+//        List<Chat> chats = get("chats", new TypeReference<>() {});
         List<Chat> chats = getFile("src/main/java/com/cli/chat/data/chats.json", new TypeReference<>() {});
         LoadingAnimation.stopLoadingAnimation();
         return chats;
     }
 
-    public static String getUsername(String username) {
+    public static String getUsername() throws Exception {
         LoadingAnimation.startLoadingAnimation("Checking if account exists");
-        new Delay(2000); // TODO: Add API call to check if account exists
-        LoadingAnimation.stopLoadingAnimation();
-        return username;
+        try {
+            User newUser = get("user/check", new TypeReference<>() {}, SessionInfo.getJWT());
+
+            if (newUser.username() == null) {
+                throw new UserNotFoundException("User doesn't exist");
+            } else {
+                return newUser.username();
+            }
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
     }
 
-    public static void createAccount(String username, String token) {
+
+    public static void createAccount(String username, String token) throws Exception {
         LoadingAnimation.startLoadingAnimation("Creating account");
-        // new Delay(200);
+        User newUser = new User(username);
+
         try {
-            User newUser = new User(username);
-            
-            User createdUser = post("user/create", newUser, new TypeReference<User>() {}, token);
-            
-            System.out.println("Account created successfully: " + createdUser.username());
+            post("user/create", newUser, token);
         } catch (Exception e) {
-            System.out.println("Error creating account: " + e.getMessage());
+            throw new Exception(e.getMessage());
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
         }
-        LoadingAnimation.stopLoadingAnimation();
     }
 
     public static void sendMessage(String sender, String recipient, String message, String token) {
 
         DirectMessageDTO newMessage = new DirectMessageDTO(sender, recipient, message);
 
-        post("conversation/send", newMessage, new TypeReference<Message>() {}, token);
+        post("conversation/send", newMessage, token);
         ConsolePrinter.println("Message sent to: " + recipient);
     }
 
-    public static void deleteChats() {
+    public static void deleteChat() {
         
     }
 
-    private static <T> T get(String endpoint, TypeReference<T> responseType) {
+    private static <T> T get(String endpoint, TypeReference<T> responseType) throws Exception {
+        return get(endpoint, responseType, "");
+    }
+
+    private static <T> T get(String endpoint, TypeReference<T> responseType, String token) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL + endpoint))
                 .header("Accept", "application/json")
+                .header("Authorization", "Bearer " + token)
                 .GET()
                 .build();
 
@@ -95,14 +110,22 @@ public class ApiHandler {
                 throw new IOException("HTTP Error: " + response.statusCode() + " - " + response.body());
             }
 
-            return objectMapper.readValue(response.body(), responseType);
+            try {
+                return objectMapper.readValue(response.body(), responseType);
+            } catch (JsonProcessingException e) {
+                throw new ApiResponseParsingException("Failed to parse JSON response");
+            }
+
         } catch (IOException | InterruptedException e) {
-            Thread.currentThread().interrupt(); // Restore interrupt status if interrupted
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt(); // Preserve interruption status
+            }
             throw new RuntimeException("Request failed: " + e.getMessage(), e);
         }
     }
 
-    private static <T, R> R post(String endpoint, T requestBody, TypeReference<R> responseType, String token) {
+
+    private static <T> void post(String endpoint, T requestBody, String token) {
         HttpRequest request;
         try {
             String requestBodyJson = objectMapper.writeValueAsString(requestBody);
@@ -124,15 +147,14 @@ public class ApiHandler {
                 throw new IOException("HTTP Error: " + response.statusCode() + " - " + response.body());
             }
 
-            return objectMapper.readValue(response.body(), responseType);
         } catch (IOException | InterruptedException e) {
-            Thread.currentThread().interrupt(); 
             throw new RuntimeException("Request failed: " + e.getMessage(), e);
         }
     }
 
+
     private static <T> T getFile(String filename, TypeReference<T> responseType) {
-        new Delay(2000);
+        new Delay(1000);
         try {
             return objectMapper.readValue(new java.io.File(filename), responseType);
         } catch (IOException e) {
