@@ -1,4 +1,3 @@
-
 package com.cli.chat.handlers;
 
 import com.cli.chat.models.records.Chat;
@@ -53,6 +52,6 @@ class ApiHandlerTest {
 
     @Test
     void sendMessage_ShouldNotThrowExceptions() {
-        assertDoesNotThrow(() -> ApiHandler.sendMessage("Alice", "Bob", "Hello, Bob!", "sometoken"));
+        assertDoesNotThrow(() -> ApiHandler.sendMessage("Alice", "Bob"));
     }
 }

@@ -20,7 +20,7 @@ public class CommandHandler {
         );
     }
 
-    private static Optional<ParsedCommand> getParsedCommand(Command command, String input) {
+     static Optional<ParsedCommand> getParsedCommand(Command command, String input) {
         Matcher matcher = command.getPattern().matcher(input);
         return matcher.matches()
                 ? Optional.of(new ParsedCommand(command,
@@ -32,7 +32,7 @@ public class CommandHandler {
                 : Optional.empty();
     }
 
-    private static Optional<ParsedCommand> parseCommand(String input) {
+     static Optional<ParsedCommand> parseCommand(String input) {
         List<Command> availableCommands = StateHandler.getAvailableCommands();
 
         return availableCommands.stream()
@@ -41,7 +41,7 @@ public class CommandHandler {
                 .flatMap(command -> getParsedCommand(command, input));
     }
 
-    private static void executeCommand(ParsedCommand parsedCommand) {
+     static void executeCommand(ParsedCommand parsedCommand) {
         Command command = parsedCommand.command();
         List<String> arguments = parsedCommand.arguments();
 
@@ -61,7 +61,7 @@ public class CommandHandler {
         }
     }
 
-    private static void handleInvalidCommand() {
+     static void handleInvalidCommand() {
         ConsolePrinter.blankln();
         ConsolePrinter.print("Invalid command", ConsolePrinter.RED, ConsolePrinter.BOLD);
         ConsolePrinter.print(" - type ");
