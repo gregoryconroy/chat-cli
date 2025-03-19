@@ -135,6 +135,7 @@ public class StateHandler {
     public static void sendMessage(String message) {
         try {
             ApiHandler.sendMessage(SessionInfo.getActiveConversation(), message);
+            refresh();
         } catch (Exception e) {
             ConsolePrinter.printError(e.getMessage());
         }
