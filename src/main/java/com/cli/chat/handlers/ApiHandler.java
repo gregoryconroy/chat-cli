@@ -5,7 +5,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import com.cli.chat.data.SessionInfo;
@@ -69,10 +71,11 @@ public class ApiHandler {
 
     public static void createAccount(String username, String token) throws Exception {
         LoadingAnimation.startLoadingAnimation("Creating account");
-        User newUser = new User(username);
-
         try {
-            post("user/create", newUser, token);
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("username", username);
+
+            post("user/create", requestBody, token);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         } finally {
@@ -82,10 +85,11 @@ public class ApiHandler {
 
     public static void createConversation(String conversationName) throws Exception {
         LoadingAnimation.startLoadingAnimation("Creating account");
-
         try {
-            Conversation newConversation = new Conversation(conversationName);
-            post("conversations", newConversation, SessionInfo.getJWT());
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("name", conversationName);
+
+            post("conversations/create", requestBody, SessionInfo.getJWT());
         } catch (Exception e) {
             throw new Exception("Could not create conversation" + e.getMessage());
         } finally {
@@ -93,12 +97,20 @@ public class ApiHandler {
         }
     }
 
-    public static void sendMessage(String sender, String recipient, String message, String token) {
+    public static void sendMessage(String recipient, String message) throws Exception {
 
-        DirectMessageDTO newMessage = new DirectMessageDTO(sender, recipient, message);
+        try {
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("conversationName", recipient);
+            requestBody.put("message", message);
 
-        post("conversation/send", newMessage, token);
-        ConsolePrinter.println("Message sent to: " + recipient);
+            post("conversations/send", requestBody, SessionInfo.getJWT());
+        } catch (Exception e) {
+            throw new Exception("Could not send message" + e.getMessage());
+        } finally {
+            LoadingAnimation.stopLoadingAnimation();
+        }
+
     }
 
     public static void addConvoUser(String name, String conversationName) {

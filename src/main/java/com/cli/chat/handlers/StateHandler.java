@@ -117,7 +117,11 @@ public class StateHandler {
     }
 
     public static void sendMessage(String message) {
-        ApiHandler.sendMessage(SessionInfo.getUsername(), SessionInfo.getActiveConversation(), message, SessionInfo.getJWT());
+        try {
+            ApiHandler.sendMessage(SessionInfo.getActiveConversation(), message);
+        } catch (Exception e) {
+            ConsolePrinter.println(e.getMessage(), ConsolePrinter.RED, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+        }
     }
 
     public static void showHelp() {
