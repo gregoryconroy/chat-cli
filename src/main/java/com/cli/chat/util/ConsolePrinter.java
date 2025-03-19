@@ -106,18 +106,20 @@ public class ConsolePrinter {
     }
 
     public static void printConversation(List<Message> messages) {
-        messages.forEach(message -> {
-            if (Objects.equals(message.username(), SessionInfo.getUsername())) {
-                print("You", CYAN, BOLD);
-            }
-            else {
-                print(message.username(), BLUE, BOLD);
-            }
-            println(" [" + message.datetime().toLocalTime() + "]", YELLOW);
-            println(message.message());
-            blankln();
-        });
+        Optional.of(messages)
+                .filter(list -> !list.isEmpty())
+                .ifPresentOrElse(
+                        list -> list.forEach(message -> {
+                            print(Objects.equals(message.username(), SessionInfo.getUsername()) ? "You" : message.username(),
+                                    Objects.equals(message.username(), SessionInfo.getUsername()) ? CYAN : BLUE, BOLD);
+                            println(" [" + message.datetime().toLocalTime() + "]", YELLOW);
+                            println(message.message());
+                            blankln();
+                        }),
+                        () -> println("No messages in this conversation.", RED) // Runs if list is empty
+                );
     }
+
 
     public static void printConversations(List<Conversation> conversations) {
         Queue<String> colourQueue = new LinkedList<>();
@@ -125,14 +127,26 @@ public class ConsolePrinter {
         colourQueue.add(MAGENTA);
         colourQueue.add(CYAN);
 
-        conversations.forEach(conversation -> {
-            String colour = colourQueue.remove();
-            print(conversation.conversationName(), colour, BOLD);
-            println(" [" + conversation.datetime().toString() + "]", YELLOW);
-            println(conversation.lastMessage());
-            colourQueue.add(colour);
-            blankln();
-        });
+        if (conversations.isEmpty()) {
+            println("No conversations exist", RED);
+        } else {
+            conversations.forEach(conversation -> {
+                String colour = colourQueue.remove();
+                print(conversation.conversationName(), colour, BOLD);
+
+                if (!Objects.isNull(conversation.datetime())) {
+                    println(" [" + conversation.datetime().toLocalDate() + "]", YELLOW);
+                    print(conversation.lastSenderUsername() + ": ", GREEN, BOLD);
+                    println(conversation.lastMessage());
+                }
+                else {
+                    println("\nNo messages in this conversation", RED);
+                }
+
+                colourQueue.add(colour);
+                blankln();
+            });
+        }
     }
 
     public static void printError(String error) {

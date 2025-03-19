@@ -22,11 +22,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.cli.chat.models.records.User;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class ApiHandler {
     private static final HttpClient client = HttpClient.newHttpClient();
     private static final String API_URL = "http://ec2-13-246-228-91.af-south-1.compute.amazonaws.com:8080/";
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    public static void init() {
+        objectMapper.registerModule(new JavaTimeModule());
+    }
 
     public static String getUsername() throws Exception {
         LoadingAnimation.startLoadingAnimation("Checking if account exists");
@@ -68,10 +73,12 @@ public class ApiHandler {
         }
     }
 
-    public static List<Message> getMessages(String conversationName) throws Exception {
+    public static List<Message> getMessages(String conversation) throws Exception {
         LoadingAnimation.startLoadingAnimation("Retrieving messages");
         try {
-            return get("conversations/show/" + conversationName, new TypeReference<>() {}, SessionInfo.getJWT());
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("conversation", conversation);
+            return post("conversations/show", requestBody, new TypeReference<>() {}, SessionInfo.getJWT());
         } catch (Exception e) {
             throw new Exception(e);
         } finally {
@@ -82,8 +89,8 @@ public class ApiHandler {
     public static void sendMessage(String recipient, String message) throws Exception {
         try {
             Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("conversationName", recipient);
-            requestBody.put("message", message);
+            requestBody.put("conversation", recipient);
+            requestBody.put("text", message);
 
             post("conversations/message", requestBody, SessionInfo.getJWT());
         } catch (Exception e) {

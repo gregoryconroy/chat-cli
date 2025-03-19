@@ -21,6 +21,7 @@ public class StateHandler {
         StateHandler.gotoPage(Page.LOGIN);
         String token = BrowserHandler.getToken();
         SessionInfo.setJWT(token);
+        ApiHandler.init();
 
         try {
             String username = ApiHandler.getUsername();
@@ -115,15 +116,16 @@ public class StateHandler {
     }
 
     public static void openConversation(String conversationName) {
-        gotoPage(Page.CONVERSATION);
-
-        SessionInfo.setActiveConversation(conversationName);
-        
-        ConsolePrinter.println(conversationName, ConsolePrinter.YELLOW, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
-        ConsolePrinter.blankln();
-
         try {
             List<Message> messages = ApiHandler.getMessages(conversationName);
+
+            gotoPage(Page.CONVERSATION);
+
+            SessionInfo.setActiveConversation(conversationName);
+
+            ConsolePrinter.println(conversationName, ConsolePrinter.YELLOW, ConsolePrinter.BOLD, ConsolePrinter.UNDERLINE);
+            ConsolePrinter.blankln();
+
             ConsolePrinter.printConversation(messages);
         } catch (Exception e) {
             ConsolePrinter.printError(e.getMessage());
@@ -139,12 +141,9 @@ public class StateHandler {
     }
 
     public static void refresh(){
-        try {
-            List<Message> messages = ApiHandler.getMessages(SessionInfo.getActiveConversation());
-            showPageInfo();
-            ConsolePrinter.printConversation(messages);
-        } catch (Exception e) {
-            ConsolePrinter.printError(e.getMessage());
+        switch (currentPage) {
+            case Page.CHATS -> showConversations();
+            case Page.CONVERSATION -> openConversation(SessionInfo.getActiveConversation());
         }
     }
 
