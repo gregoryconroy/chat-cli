@@ -213,15 +213,4 @@ public class ApiHandler {
             throw new RuntimeException("Request failed: " + e.getMessage(), e);
         }
     }
-
-
-    private static <T> T getFile(String filename, TypeReference<T> responseType) {
-        new Delay(1000);
-        try {
-            return objectMapper.readValue(new java.io.File(filename), responseType);
-        } catch (IOException e) {
-            throw new RuntimeException("File read failed: " + e.getMessage(), e);
-        }
-    }
-
 }
