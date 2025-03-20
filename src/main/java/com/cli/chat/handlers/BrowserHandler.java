@@ -43,7 +43,7 @@ public class BrowserHandler {
             if (Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().browse(new URI(authUrl));
             } else {
-                Runtime.getRuntime().exec("xdg-open " + authUrl); // Linux alternative
+                Runtime.getRuntime().exec("xdg-open " + authUrl);
             }
         } catch (Exception e) {
             e.printStackTrace();

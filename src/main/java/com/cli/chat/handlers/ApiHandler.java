@@ -153,7 +153,7 @@ public class ApiHandler {
 
         } catch (IOException | InterruptedException e) {
             if (e instanceof InterruptedException) {
-                Thread.currentThread().interrupt(); // Preserve interruption status
+                Thread.currentThread().interrupt(); 
             }
             throw new RuntimeException("Request failed: " + e.getMessage(), e);
         }

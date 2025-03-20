@@ -37,30 +37,24 @@ public class ConsolePrinter {
     public static void print(String text, String... styles) {
         StringBuilder formattedText = new StringBuilder();
 
-        // Apply styles
         for (String style : styles) {
             formattedText.append(style);
         }
 
-        // Append the text and reset formatting
         formattedText.append(text).append(RESET);
 
-        // Print to the terminal
         System.out.print(formattedText);
     }
 
     public static void println(String text, String... styles) {
         StringBuilder formattedText = new StringBuilder();
 
-        // Apply styles
         for (String style : styles) {
             formattedText.append(style);
         }
 
-        // Append the text and reset formatting
         formattedText.append(text).append(RESET);
 
-        // Print to the terminal
         System.out.println(formattedText);
     }
 
@@ -164,11 +158,9 @@ public class ConsolePrinter {
 
     public static void clearConsole() {
         try {
-            // For Windows
             if (System.getProperty("os.name").contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {
-                // For Unix-based systems
                 new ProcessBuilder("clear").inheritIO().start().waitFor();
             }
         } catch (Exception e) {

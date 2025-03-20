@@ -8,7 +8,7 @@ public class LoadingAnimation {
     private static final String LOAD_COLOUR = ConsolePrinter.CYAN;
 
     public static void startLoadingAnimation(String info) {
-        if (running) return; // Prevent multiple animations
+        if (running) return;
         running = true;
 
         executor.submit(() -> {
@@ -16,7 +16,7 @@ public class LoadingAnimation {
             int underlineStartIndex = 0;
             int underlineEndIndex = 0;
 
-            System.out.print("\033[?25l"); // Hide cursor
+            System.out.print("\033[?25l");
 
             while (running) {
                 System.out.print("\r");
@@ -42,7 +42,7 @@ public class LoadingAnimation {
                 new Delay(50);
             }
 
-            System.out.print("\033[?25h"); // Show cursor
+            System.out.print("\033[?25h");
         });
     }
 
@@ -53,7 +53,6 @@ public class LoadingAnimation {
     }
 
     private static void clearText() {
-        // Move to the beginning of the line, clear it, and reset cursor
         System.out.print("\r\033[K");
     }
 }
